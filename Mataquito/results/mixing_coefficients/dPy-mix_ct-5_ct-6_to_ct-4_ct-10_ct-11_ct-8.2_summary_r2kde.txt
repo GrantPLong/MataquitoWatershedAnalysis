@@ -1,0 +1,42 @@
+Best-fit results
+    Sample: CT-4
+    Best-fit r2-kde : 0.997
+    Mixing coefficients
+    --- CT-5 : 0.288
+    --- CT-6 : 0.712
+    Sample: CT-10
+    Best-fit r2-kde : 0.967
+    Mixing coefficients
+    --- CT-5 : 0.588
+    --- CT-6 : 0.412
+    Sample: CT-11
+    Best-fit r2-kde : 0.966
+    Mixing coefficients
+    --- CT-5 : 0.41
+    --- CT-6 : 0.59
+    Sample: CT-8.2
+    Best-fit r2-kde : 0.983
+    Mixing coefficients
+    --- CT-5 : 0.529
+    --- CT-6 : 0.471
+
+Bootstrapped mixing coefficient summary
+    CT-4:
+      CT-5: median=0.29, 95% CI [0.14, 0.44], width=0.30
+      CT-6: median=0.71, 95% CI [0.56, 0.86], width=0.30
+    CT-10:
+      CT-5: median=0.60, 95% CI [0.41, 0.80], width=0.39
+      CT-6: median=0.40, 95% CI [0.20, 0.59], width=0.39
+    CT-11:
+      CT-5: median=0.43, 95% CI [0.25, 0.61], width=0.36
+      CT-6: median=0.57, 95% CI [0.39, 0.75], width=0.36
+    CT-8.2:
+      CT-5: median=0.54, 95% CI [0.36, 0.73], width=0.37
+      CT-6: median=0.46, 95% CI [0.27, 0.64], width=0.37
+
+Model fit summary
+    CT-4: best-fit r2-kde=0.997, crit=0.984, worse_than_crit=0.113
+    CT-10: best-fit r2-kde=0.967, crit=0.979, worse_than_crit=0.904
+    CT-11: best-fit r2-kde=0.966, crit=0.983, worse_than_crit=0.991
+    CT-8.2: best-fit r2-kde=0.983, crit=0.981, worse_than_crit=0.711
+

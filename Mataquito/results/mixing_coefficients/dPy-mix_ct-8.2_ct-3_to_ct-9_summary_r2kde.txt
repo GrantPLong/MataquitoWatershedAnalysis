@@ -1,0 +1,15 @@
+Best-fit results
+    Sample: CT-9
+    Best-fit r2-kde : 0.978
+    Mixing coefficients
+    --- CT-8.2 : 0.954
+    --- CT-3 : 0.046
+
+Bootstrapped mixing coefficient summary
+    CT-9:
+      CT-8.2: median=0.95, 95% CI [0.91, 0.99], width=0.08
+      CT-3: median=0.05, 95% CI [0.01, 0.09], width=0.08
+
+Model fit summary
+    CT-9: best-fit r2-kde=0.978, crit=0.978, worse_than_crit=0.900
+

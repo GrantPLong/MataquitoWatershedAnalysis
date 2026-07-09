@@ -1,0 +1,15 @@
+Best-fit results
+    Sample: CT-9
+    Best-fit vmax : 0.185
+    Mixing coefficients
+    --- CT-2 : 0.999
+    --- CT-3 : 0.001
+
+Bootstrapped mixing coefficient summary
+    CT-9:
+      CT-2: median=0.99, 95% CI [0.92, 1.00], width=0.08
+      CT-3: median=0.01, 95% CI [0.00, 0.08], width=0.08
+
+Model fit summary
+    CT-9: best-fit vmax=0.185, crit=0.120, worse_than_crit=0.979
+

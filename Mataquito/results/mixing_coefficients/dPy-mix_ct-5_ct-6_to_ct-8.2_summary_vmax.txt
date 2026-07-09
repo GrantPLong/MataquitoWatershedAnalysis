@@ -1,0 +1,15 @@
+Best-fit results
+    Sample: CT-8.2
+    Best-fit vmax : 0.132
+    Mixing coefficients
+    --- CT-5 : 0.559
+    --- CT-6 : 0.441
+
+Bootstrapped mixing coefficient summary
+    CT-8.2:
+      CT-5: median=0.56, 95% CI [0.29, 0.76], width=0.47
+      CT-6: median=0.44, 95% CI [0.24, 0.71], width=0.47
+
+Model fit summary
+    CT-8.2: best-fit vmax=0.132, crit=0.122, worse_than_crit=0.535
+

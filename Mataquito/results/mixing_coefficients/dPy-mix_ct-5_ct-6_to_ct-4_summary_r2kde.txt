@@ -1,0 +1,15 @@
+Best-fit results
+    Sample: CT-4
+    Best-fit r2-kde : 0.997
+    Mixing coefficients
+    --- CT-5 : 0.288
+    --- CT-6 : 0.712
+
+Bootstrapped mixing coefficient summary
+    CT-4:
+      CT-5: median=0.29, 95% CI [0.14, 0.45], width=0.30
+      CT-6: median=0.71, 95% CI [0.55, 0.86], width=0.30
+
+Model fit summary
+    CT-4: best-fit r2-kde=0.997, crit=0.984, worse_than_crit=0.125
+

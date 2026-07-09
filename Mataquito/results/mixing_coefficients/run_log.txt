@@ -1,0 +1,399 @@
+[2026-07-07 19:51:46] Loading dataset...
+[2026-07-07 19:51:47] Dataset loaded.
+[2026-07-07 19:51:47] --- Run 1/2: ct5ct6_to_CT4 / vmax ---
+[2026-07-07 19:51:47] [ct5ct6_to_CT4] vmax: starting best-fit optimization
+[2026-07-07 19:51:47] [ct5ct6_to_CT4] vmax: best-fit done (0.0 min)
+[2026-07-07 19:51:47] [ct5ct6_to_CT4] vmax: starting bootstrap (10000 iterations)
+[2026-07-07 19:58:20] [ct5ct6_to_CT4] vmax: bootstrap done (6.5 min)
+[2026-07-07 20:00:23] [ct5ct6_to_CT4] vmax: self-comparison done (2.1 min)
+[2026-07-07 20:00:27] [ct5ct6_to_CT4] vmax: figures + exports saved
+[2026-07-07 20:00:27] [ct5ct6_to_CT4] vmax: SCENARIO COMPLETE (8.7 min)
+[2026-07-07 20:00:27] --- Run 2/2: ct5ct6_to_CT4 / r2-kde ---
+[2026-07-07 20:00:27] [ct5ct6_to_CT4] r2-kde: starting best-fit optimization
+[2026-07-07 20:00:27] [ct5ct6_to_CT4] r2-kde: best-fit done (0.0 min)
+[2026-07-07 20:00:27] [ct5ct6_to_CT4] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-07 20:06:54] [ct5ct6_to_CT4] r2-kde: bootstrap done (6.5 min)
+[2026-07-07 20:07:32] [ct5ct6_to_CT4] r2-kde: self-comparison done (0.6 min)
+[2026-07-07 20:07:35] [ct5ct6_to_CT4] r2-kde: figures + exports saved
+[2026-07-07 20:07:35] [ct5ct6_to_CT4] r2-kde: SCENARIO COMPLETE (7.1 min)
+[2026-07-07 20:07:35] All runs finished (2/2 attempted).
+[2026-07-07 21:20:55] Loading dataset...
+[2026-07-07 21:20:55] Dataset loaded.
+[2026-07-07 21:20:55] --- Run 1/2: ct7ct1_to_CT4 / vmax ---
+[2026-07-07 21:20:55] [ct7ct1_to_CT4] vmax: starting best-fit optimization
+[2026-07-07 21:20:55] [ct7ct1_to_CT4] vmax: best-fit done (0.0 min)
+[2026-07-07 21:20:55] [ct7ct1_to_CT4] vmax: starting bootstrap (10000 iterations)
+[2026-07-07 21:26:11] Loading dataset...
+[2026-07-07 21:26:11] Dataset loaded.
+[2026-07-07 21:26:11] --- Run 1/2: ct7ct1_to_CT4 / vmax ---
+[2026-07-07 21:26:11] [ct7ct1_to_CT4] vmax: starting best-fit optimization
+[2026-07-07 21:26:11] [ct7ct1_to_CT4] vmax: best-fit done (0.0 min)
+[2026-07-07 21:26:11] [ct7ct1_to_CT4] vmax: starting bootstrap (100 iterations)
+[2026-07-07 21:26:15] [ct7ct1_to_CT4] vmax: bootstrap done (0.1 min)
+[2026-07-07 21:26:16] [ct7ct1_to_CT4] vmax: self-comparison done (0.0 min)
+[2026-07-07 21:26:17] [ct7ct1_to_CT4] vmax: figures + exports saved
+[2026-07-07 21:26:17] [ct7ct1_to_CT4] vmax: SCENARIO COMPLETE (0.1 min)
+[2026-07-07 21:26:17] --- Run 2/2: ct7ct1_to_CT4 / r2-kde ---
+[2026-07-07 21:26:17] [ct7ct1_to_CT4] r2-kde: starting best-fit optimization
+[2026-07-07 21:26:17] [ct7ct1_to_CT4] r2-kde: best-fit done (0.0 min)
+[2026-07-07 21:26:17] [ct7ct1_to_CT4] r2-kde: starting bootstrap (100 iterations)
+[2026-07-07 21:26:22] [ct7ct1_to_CT4] r2-kde: bootstrap done (0.1 min)
+[2026-07-07 21:26:22] [ct7ct1_to_CT4] r2-kde: self-comparison done (0.0 min)
+[2026-07-07 21:26:23] [ct7ct1_to_CT4] r2-kde: figures + exports saved
+[2026-07-07 21:26:23] [ct7ct1_to_CT4] r2-kde: SCENARIO COMPLETE (0.1 min)
+[2026-07-07 21:26:23] All runs finished (2/2 attempted).
+[2026-07-07 21:30:55] Loading dataset...
+[2026-07-07 21:30:55] Dataset loaded.
+[2026-07-07 21:30:55] --- Run 1/44: ct7ct1_to_CT4 / vmax ---
+[2026-07-07 21:30:55] [ct7ct1_to_CT4] vmax: starting best-fit optimization
+[2026-07-07 21:30:55] [ct7ct1_to_CT4] vmax: best-fit done (0.0 min)
+[2026-07-07 21:30:55] [ct7ct1_to_CT4] vmax: starting bootstrap (10000 iterations)
+[2026-07-07 21:36:00] [ct7ct1_to_CT4] vmax: bootstrap done (5.1 min)
+[2026-07-07 21:37:36] [ct7ct1_to_CT4] vmax: self-comparison done (1.6 min)
+[2026-07-07 21:37:38] [ct7ct1_to_CT4] vmax: figures + exports saved
+[2026-07-07 21:37:38] [ct7ct1_to_CT4] vmax: SCENARIO COMPLETE (6.7 min)
+[2026-07-07 21:37:38] --- Run 2/44: ct7ct1_to_CT4 / r2-kde ---
+[2026-07-07 21:37:38] [ct7ct1_to_CT4] r2-kde: starting best-fit optimization
+[2026-07-07 21:37:38] [ct7ct1_to_CT4] r2-kde: best-fit done (0.0 min)
+[2026-07-07 21:37:38] [ct7ct1_to_CT4] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-07 21:43:32] [ct7ct1_to_CT4] r2-kde: bootstrap done (5.9 min)
+[2026-07-07 21:44:01] [ct7ct1_to_CT4] r2-kde: self-comparison done (0.5 min)
+[2026-07-07 21:44:04] [ct7ct1_to_CT4] r2-kde: figures + exports saved
+[2026-07-07 21:44:04] [ct7ct1_to_CT4] r2-kde: SCENARIO COMPLETE (6.4 min)
+[2026-07-07 21:44:04] --- Run 3/44: ct7ct1_to_CT10 / vmax ---
+[2026-07-07 21:44:04] [ct7ct1_to_CT10] vmax: starting best-fit optimization
+[2026-07-07 21:44:04] [ct7ct1_to_CT10] vmax: best-fit done (0.0 min)
+[2026-07-07 21:44:04] [ct7ct1_to_CT10] vmax: starting bootstrap (10000 iterations)
+[2026-07-07 21:48:57] [ct7ct1_to_CT10] vmax: bootstrap done (4.9 min)
+[2026-07-07 21:50:29] [ct7ct1_to_CT10] vmax: self-comparison done (1.5 min)
+[2026-07-07 21:50:32] [ct7ct1_to_CT10] vmax: figures + exports saved
+[2026-07-07 21:50:32] [ct7ct1_to_CT10] vmax: SCENARIO COMPLETE (6.5 min)
+[2026-07-07 21:50:32] --- Run 4/44: ct7ct1_to_CT10 / r2-kde ---
+[2026-07-07 21:50:32] [ct7ct1_to_CT10] r2-kde: starting best-fit optimization
+[2026-07-07 21:50:32] [ct7ct1_to_CT10] r2-kde: best-fit done (0.0 min)
+[2026-07-07 21:50:32] [ct7ct1_to_CT10] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-07 21:56:22] [ct7ct1_to_CT10] r2-kde: bootstrap done (5.8 min)
+[2026-07-07 21:56:50] [ct7ct1_to_CT10] r2-kde: self-comparison done (0.5 min)
+[2026-07-07 21:56:53] [ct7ct1_to_CT10] r2-kde: figures + exports saved
+[2026-07-07 21:56:53] [ct7ct1_to_CT10] r2-kde: SCENARIO COMPLETE (6.3 min)
+[2026-07-07 21:56:53] --- Run 5/44: ct7ct1_to_CT11 / vmax ---
+[2026-07-07 21:56:53] [ct7ct1_to_CT11] vmax: starting best-fit optimization
+[2026-07-07 21:56:53] [ct7ct1_to_CT11] vmax: best-fit done (0.0 min)
+[2026-07-07 21:56:53] [ct7ct1_to_CT11] vmax: starting bootstrap (10000 iterations)
+[2026-07-07 22:01:50] [ct7ct1_to_CT11] vmax: bootstrap done (5.0 min)
+[2026-07-07 22:03:25] [ct7ct1_to_CT11] vmax: self-comparison done (1.6 min)
+[2026-07-07 22:03:27] [ct7ct1_to_CT11] vmax: figures + exports saved
+[2026-07-07 22:03:27] [ct7ct1_to_CT11] vmax: SCENARIO COMPLETE (6.6 min)
+[2026-07-07 22:03:27] --- Run 6/44: ct7ct1_to_CT11 / r2-kde ---
+[2026-07-07 22:03:27] [ct7ct1_to_CT11] r2-kde: starting best-fit optimization
+[2026-07-07 22:03:27] [ct7ct1_to_CT11] r2-kde: best-fit done (0.0 min)
+[2026-07-07 22:03:27] [ct7ct1_to_CT11] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-07 22:09:19] [ct7ct1_to_CT11] r2-kde: bootstrap done (5.9 min)
+[2026-07-07 22:09:47] [ct7ct1_to_CT11] r2-kde: self-comparison done (0.5 min)
+[2026-07-07 22:09:50] [ct7ct1_to_CT11] r2-kde: figures + exports saved
+[2026-07-07 22:09:50] [ct7ct1_to_CT11] r2-kde: SCENARIO COMPLETE (6.4 min)
+[2026-07-07 22:09:50] --- Run 7/44: ct7ct1_to_CT8_2 / vmax ---
+[2026-07-07 22:09:50] [ct7ct1_to_CT8_2] vmax: starting best-fit optimization
+[2026-07-07 22:09:50] [ct7ct1_to_CT8_2] vmax: best-fit done (0.0 min)
+[2026-07-07 22:09:50] [ct7ct1_to_CT8_2] vmax: starting bootstrap (10000 iterations)
+[2026-07-07 22:14:47] [ct7ct1_to_CT8_2] vmax: bootstrap done (5.0 min)
+[2026-07-07 22:16:22] [ct7ct1_to_CT8_2] vmax: self-comparison done (1.6 min)
+[2026-07-07 22:16:24] [ct7ct1_to_CT8_2] vmax: figures + exports saved
+[2026-07-07 22:16:24] [ct7ct1_to_CT8_2] vmax: SCENARIO COMPLETE (6.6 min)
+[2026-07-07 22:16:24] --- Run 8/44: ct7ct1_to_CT8_2 / r2-kde ---
+[2026-07-07 22:16:24] [ct7ct1_to_CT8_2] r2-kde: starting best-fit optimization
+[2026-07-07 22:16:24] [ct7ct1_to_CT8_2] r2-kde: best-fit done (0.0 min)
+[2026-07-07 22:16:24] [ct7ct1_to_CT8_2] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-07 22:22:25] [ct7ct1_to_CT8_2] r2-kde: bootstrap done (6.0 min)
+[2026-07-07 22:22:53] [ct7ct1_to_CT8_2] r2-kde: self-comparison done (0.5 min)
+[2026-07-07 22:22:56] [ct7ct1_to_CT8_2] r2-kde: figures + exports saved
+[2026-07-07 22:22:56] [ct7ct1_to_CT8_2] r2-kde: SCENARIO COMPLETE (6.5 min)
+[2026-07-07 22:22:56] --- Run 9/44: ct7ct1_to_CT2 / vmax ---
+[2026-07-07 22:22:56] [ct7ct1_to_CT2] vmax: starting best-fit optimization
+[2026-07-07 22:22:56] [ct7ct1_to_CT2] vmax: best-fit done (0.0 min)
+[2026-07-07 22:22:56] [ct7ct1_to_CT2] vmax: starting bootstrap (10000 iterations)
+[2026-07-07 22:28:02] [ct7ct1_to_CT2] vmax: bootstrap done (5.1 min)
+[2026-07-07 22:29:37] [ct7ct1_to_CT2] vmax: self-comparison done (1.6 min)
+[2026-07-07 22:29:40] [ct7ct1_to_CT2] vmax: figures + exports saved
+[2026-07-07 22:29:40] [ct7ct1_to_CT2] vmax: SCENARIO COMPLETE (6.7 min)
+[2026-07-07 22:29:40] --- Run 10/44: ct7ct1_to_CT2 / r2-kde ---
+[2026-07-07 22:29:40] [ct7ct1_to_CT2] r2-kde: starting best-fit optimization
+[2026-07-07 22:29:40] [ct7ct1_to_CT2] r2-kde: best-fit done (0.0 min)
+[2026-07-07 22:29:40] [ct7ct1_to_CT2] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-07 22:34:59] [ct7ct1_to_CT2] r2-kde: bootstrap done (5.3 min)
+[2026-07-07 22:35:28] [ct7ct1_to_CT2] r2-kde: self-comparison done (0.5 min)
+[2026-07-07 22:35:30] [ct7ct1_to_CT2] r2-kde: figures + exports saved
+[2026-07-07 22:35:30] [ct7ct1_to_CT2] r2-kde: SCENARIO COMPLETE (5.8 min)
+[2026-07-07 22:35:30] --- Run 11/44: ct7ct1_to_CT9 / vmax ---
+[2026-07-07 22:35:30] [ct7ct1_to_CT9] vmax: starting best-fit optimization
+[2026-07-07 22:35:30] [ct7ct1_to_CT9] vmax: best-fit done (0.0 min)
+[2026-07-07 22:35:30] [ct7ct1_to_CT9] vmax: starting bootstrap (10000 iterations)
+[2026-07-07 22:40:25] [ct7ct1_to_CT9] vmax: bootstrap done (4.9 min)
+[2026-07-07 22:41:59] [ct7ct1_to_CT9] vmax: self-comparison done (1.6 min)
+[2026-07-07 22:42:01] [ct7ct1_to_CT9] vmax: figures + exports saved
+[2026-07-07 22:42:01] [ct7ct1_to_CT9] vmax: SCENARIO COMPLETE (6.5 min)
+[2026-07-07 22:42:02] --- Run 12/44: ct7ct1_to_CT9 / r2-kde ---
+[2026-07-07 22:42:02] [ct7ct1_to_CT9] r2-kde: starting best-fit optimization
+[2026-07-07 22:42:02] [ct7ct1_to_CT9] r2-kde: best-fit done (0.0 min)
+[2026-07-07 22:42:02] [ct7ct1_to_CT9] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-07 22:47:43] [ct7ct1_to_CT9] r2-kde: bootstrap done (5.7 min)
+[2026-07-07 22:48:11] [ct7ct1_to_CT9] r2-kde: self-comparison done (0.5 min)
+[2026-07-07 22:48:13] [ct7ct1_to_CT9] r2-kde: figures + exports saved
+[2026-07-07 22:48:13] [ct7ct1_to_CT9] r2-kde: SCENARIO COMPLETE (6.2 min)
+[2026-07-07 22:48:13] --- Run 13/44: ct5ct6_batch_CT4_CT10_CT11_CT8_2 / vmax ---
+[2026-07-07 22:48:13] [ct5ct6_batch_CT4_CT10_CT11_CT8_2] vmax: starting best-fit optimization
+[2026-07-07 22:48:13] [ct5ct6_batch_CT4_CT10_CT11_CT8_2] vmax: best-fit done (0.0 min)
+[2026-07-07 22:48:13] [ct5ct6_batch_CT4_CT10_CT11_CT8_2] vmax: starting bootstrap (10000 iterations)
+[2026-07-07 23:08:20] [ct5ct6_batch_CT4_CT10_CT11_CT8_2] vmax: bootstrap done (20.1 min)
+[2026-07-07 23:14:38] [ct5ct6_batch_CT4_CT10_CT11_CT8_2] vmax: self-comparison done (6.3 min)
+[2026-07-07 23:14:47] [ct5ct6_batch_CT4_CT10_CT11_CT8_2] vmax: figures + exports saved
+[2026-07-07 23:14:47] [ct5ct6_batch_CT4_CT10_CT11_CT8_2] vmax: SCENARIO COMPLETE (26.6 min)
+[2026-07-07 23:14:47] --- Run 14/44: ct5ct6_batch_CT4_CT10_CT11_CT8_2 / r2-kde ---
+[2026-07-07 23:14:47] [ct5ct6_batch_CT4_CT10_CT11_CT8_2] r2-kde: starting best-fit optimization
+[2026-07-07 23:14:47] [ct5ct6_batch_CT4_CT10_CT11_CT8_2] r2-kde: best-fit done (0.0 min)
+[2026-07-07 23:14:47] [ct5ct6_batch_CT4_CT10_CT11_CT8_2] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-07 23:33:07] [ct5ct6_batch_CT4_CT10_CT11_CT8_2] r2-kde: bootstrap done (18.3 min)
+[2026-07-07 23:35:01] [ct5ct6_batch_CT4_CT10_CT11_CT8_2] r2-kde: self-comparison done (1.9 min)
+[2026-07-07 23:35:09] [ct5ct6_batch_CT4_CT10_CT11_CT8_2] r2-kde: figures + exports saved
+[2026-07-07 23:35:09] [ct5ct6_batch_CT4_CT10_CT11_CT8_2] r2-kde: SCENARIO COMPLETE (20.4 min)
+[2026-07-07 23:35:09] --- Run 15/44: ct5ct6_to_CT4 / vmax ---
+[2026-07-07 23:35:09] [ct5ct6_to_CT4] vmax: starting best-fit optimization
+[2026-07-07 23:35:09] [ct5ct6_to_CT4] vmax: best-fit done (0.0 min)
+[2026-07-07 23:35:09] [ct5ct6_to_CT4] vmax: starting bootstrap (10000 iterations)
+[2026-07-07 23:40:10] [ct5ct6_to_CT4] vmax: bootstrap done (5.0 min)
+[2026-07-07 23:41:46] [ct5ct6_to_CT4] vmax: self-comparison done (1.6 min)
+[2026-07-07 23:41:48] [ct5ct6_to_CT4] vmax: figures + exports saved
+[2026-07-07 23:41:48] [ct5ct6_to_CT4] vmax: SCENARIO COMPLETE (6.6 min)
+[2026-07-07 23:41:48] --- Run 16/44: ct5ct6_to_CT4 / r2-kde ---
+[2026-07-07 23:41:48] [ct5ct6_to_CT4] r2-kde: starting best-fit optimization
+[2026-07-07 23:41:48] [ct5ct6_to_CT4] r2-kde: best-fit done (0.0 min)
+[2026-07-07 23:41:48] [ct5ct6_to_CT4] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-07 23:46:42] [ct5ct6_to_CT4] r2-kde: bootstrap done (4.9 min)
+[2026-07-07 23:47:10] [ct5ct6_to_CT4] r2-kde: self-comparison done (0.5 min)
+[2026-07-07 23:47:12] [ct5ct6_to_CT4] r2-kde: figures + exports saved
+[2026-07-07 23:47:12] [ct5ct6_to_CT4] r2-kde: SCENARIO COMPLETE (5.4 min)
+[2026-07-07 23:47:12] --- Run 17/44: ct5ct6_to_CT10 / vmax ---
+[2026-07-07 23:47:12] [ct5ct6_to_CT10] vmax: starting best-fit optimization
+[2026-07-07 23:47:12] [ct5ct6_to_CT10] vmax: best-fit done (0.0 min)
+[2026-07-07 23:47:12] [ct5ct6_to_CT10] vmax: starting bootstrap (10000 iterations)
+[2026-07-07 23:52:14] [ct5ct6_to_CT10] vmax: bootstrap done (5.0 min)
+[2026-07-07 23:53:48] [ct5ct6_to_CT10] vmax: self-comparison done (1.6 min)
+[2026-07-07 23:53:50] [ct5ct6_to_CT10] vmax: figures + exports saved
+[2026-07-07 23:53:50] [ct5ct6_to_CT10] vmax: SCENARIO COMPLETE (6.6 min)
+[2026-07-07 23:53:50] --- Run 18/44: ct5ct6_to_CT10 / r2-kde ---
+[2026-07-07 23:53:50] [ct5ct6_to_CT10] r2-kde: starting best-fit optimization
+[2026-07-07 23:53:50] [ct5ct6_to_CT10] r2-kde: best-fit done (0.0 min)
+[2026-07-07 23:53:50] [ct5ct6_to_CT10] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-07 23:58:26] [ct5ct6_to_CT10] r2-kde: bootstrap done (4.6 min)
+[2026-07-07 23:58:54] [ct5ct6_to_CT10] r2-kde: self-comparison done (0.5 min)
+[2026-07-07 23:58:56] [ct5ct6_to_CT10] r2-kde: figures + exports saved
+[2026-07-07 23:58:56] [ct5ct6_to_CT10] r2-kde: SCENARIO COMPLETE (5.1 min)
+[2026-07-07 23:58:56] --- Run 19/44: ct5ct6_to_CT11 / vmax ---
+[2026-07-07 23:58:56] [ct5ct6_to_CT11] vmax: starting best-fit optimization
+[2026-07-07 23:58:56] [ct5ct6_to_CT11] vmax: best-fit done (0.0 min)
+[2026-07-07 23:58:56] [ct5ct6_to_CT11] vmax: starting bootstrap (10000 iterations)
+[2026-07-08 00:03:57] [ct5ct6_to_CT11] vmax: bootstrap done (5.0 min)
+[2026-07-08 00:05:31] [ct5ct6_to_CT11] vmax: self-comparison done (1.6 min)
+[2026-07-08 00:05:33] [ct5ct6_to_CT11] vmax: figures + exports saved
+[2026-07-08 00:05:33] [ct5ct6_to_CT11] vmax: SCENARIO COMPLETE (6.6 min)
+[2026-07-08 00:05:33] --- Run 20/44: ct5ct6_to_CT11 / r2-kde ---
+[2026-07-08 00:05:33] [ct5ct6_to_CT11] r2-kde: starting best-fit optimization
+[2026-07-08 00:05:33] [ct5ct6_to_CT11] r2-kde: best-fit done (0.0 min)
+[2026-07-08 00:05:33] [ct5ct6_to_CT11] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-08 00:10:01] [ct5ct6_to_CT11] r2-kde: bootstrap done (4.5 min)
+[2026-07-08 00:10:29] [ct5ct6_to_CT11] r2-kde: self-comparison done (0.5 min)
+[2026-07-08 00:10:31] [ct5ct6_to_CT11] r2-kde: figures + exports saved
+[2026-07-08 00:10:31] [ct5ct6_to_CT11] r2-kde: SCENARIO COMPLETE (5.0 min)
+[2026-07-08 00:10:31] --- Run 21/44: ct5ct6_to_CT8_2 / vmax ---
+[2026-07-08 00:10:31] [ct5ct6_to_CT8_2] vmax: starting best-fit optimization
+[2026-07-08 00:10:31] [ct5ct6_to_CT8_2] vmax: best-fit done (0.0 min)
+[2026-07-08 00:10:31] [ct5ct6_to_CT8_2] vmax: starting bootstrap (10000 iterations)
+[2026-07-08 00:15:33] [ct5ct6_to_CT8_2] vmax: bootstrap done (5.0 min)
+[2026-07-08 00:17:07] [ct5ct6_to_CT8_2] vmax: self-comparison done (1.6 min)
+[2026-07-08 00:17:09] [ct5ct6_to_CT8_2] vmax: figures + exports saved
+[2026-07-08 00:17:09] [ct5ct6_to_CT8_2] vmax: SCENARIO COMPLETE (6.6 min)
+[2026-07-08 00:17:09] --- Run 22/44: ct5ct6_to_CT8_2 / r2-kde ---
+[2026-07-08 00:17:09] [ct5ct6_to_CT8_2] r2-kde: starting best-fit optimization
+[2026-07-08 00:17:09] [ct5ct6_to_CT8_2] r2-kde: best-fit done (0.0 min)
+[2026-07-08 00:17:09] [ct5ct6_to_CT8_2] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-08 00:21:37] [ct5ct6_to_CT8_2] r2-kde: bootstrap done (4.5 min)
+[2026-07-08 00:22:06] [ct5ct6_to_CT8_2] r2-kde: self-comparison done (0.5 min)
+[2026-07-08 00:22:08] [ct5ct6_to_CT8_2] r2-kde: figures + exports saved
+[2026-07-08 00:22:08] [ct5ct6_to_CT8_2] r2-kde: SCENARIO COMPLETE (5.0 min)
+[2026-07-08 00:22:08] --- Run 23/44: ct5ct6_to_CT2 / vmax ---
+[2026-07-08 00:22:08] [ct5ct6_to_CT2] vmax: starting best-fit optimization
+[2026-07-08 00:22:08] [ct5ct6_to_CT2] vmax: best-fit done (0.0 min)
+[2026-07-08 00:22:08] [ct5ct6_to_CT2] vmax: starting bootstrap (10000 iterations)
+[2026-07-08 00:27:12] [ct5ct6_to_CT2] vmax: bootstrap done (5.1 min)
+[2026-07-08 00:28:46] [ct5ct6_to_CT2] vmax: self-comparison done (1.6 min)
+[2026-07-08 00:28:48] [ct5ct6_to_CT2] vmax: figures + exports saved
+[2026-07-08 00:28:48] [ct5ct6_to_CT2] vmax: SCENARIO COMPLETE (6.7 min)
+[2026-07-08 00:28:48] --- Run 24/44: ct5ct6_to_CT2 / r2-kde ---
+[2026-07-08 00:28:48] [ct5ct6_to_CT2] r2-kde: starting best-fit optimization
+[2026-07-08 00:28:48] [ct5ct6_to_CT2] r2-kde: best-fit done (0.0 min)
+[2026-07-08 00:28:48] [ct5ct6_to_CT2] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-08 00:33:19] [ct5ct6_to_CT2] r2-kde: bootstrap done (4.5 min)
+[2026-07-08 00:33:47] [ct5ct6_to_CT2] r2-kde: self-comparison done (0.5 min)
+[2026-07-08 00:33:49] [ct5ct6_to_CT2] r2-kde: figures + exports saved
+[2026-07-08 00:33:49] [ct5ct6_to_CT2] r2-kde: SCENARIO COMPLETE (5.0 min)
+[2026-07-08 00:33:49] --- Run 25/44: ct5ct6_to_CT9 / vmax ---
+[2026-07-08 00:33:49] [ct5ct6_to_CT9] vmax: starting best-fit optimization
+[2026-07-08 00:33:49] [ct5ct6_to_CT9] vmax: best-fit done (0.0 min)
+[2026-07-08 00:33:49] [ct5ct6_to_CT9] vmax: starting bootstrap (10000 iterations)
+[2026-07-08 00:38:58] [ct5ct6_to_CT9] vmax: bootstrap done (5.2 min)
+[2026-07-08 00:40:33] [ct5ct6_to_CT9] vmax: self-comparison done (1.6 min)
+[2026-07-08 00:40:36] [ct5ct6_to_CT9] vmax: figures + exports saved
+[2026-07-08 00:40:36] [ct5ct6_to_CT9] vmax: SCENARIO COMPLETE (6.8 min)
+[2026-07-08 00:40:36] --- Run 26/44: ct5ct6_to_CT9 / r2-kde ---
+[2026-07-08 00:40:36] [ct5ct6_to_CT9] r2-kde: starting best-fit optimization
+[2026-07-08 00:40:36] [ct5ct6_to_CT9] r2-kde: best-fit done (0.0 min)
+[2026-07-08 00:40:36] [ct5ct6_to_CT9] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-08 00:44:59] [ct5ct6_to_CT9] r2-kde: bootstrap done (4.4 min)
+[2026-07-08 00:45:27] [ct5ct6_to_CT9] r2-kde: self-comparison done (0.5 min)
+[2026-07-08 00:45:29] [ct5ct6_to_CT9] r2-kde: figures + exports saved
+[2026-07-08 00:45:29] [ct5ct6_to_CT9] r2-kde: SCENARIO COMPLETE (4.9 min)
+[2026-07-08 00:45:29] --- Run 27/44: CT2_ct4ct3 / vmax ---
+[2026-07-08 00:45:29] [CT2_ct4ct3] vmax: starting best-fit optimization
+[2026-07-08 00:45:29] [CT2_ct4ct3] vmax: best-fit done (0.0 min)
+[2026-07-08 00:45:29] [CT2_ct4ct3] vmax: starting bootstrap (10000 iterations)
+[2026-07-08 00:50:30] [CT2_ct4ct3] vmax: bootstrap done (5.0 min)
+[2026-07-08 00:52:05] [CT2_ct4ct3] vmax: self-comparison done (1.6 min)
+[2026-07-08 00:52:07] [CT2_ct4ct3] vmax: figures + exports saved
+[2026-07-08 00:52:07] [CT2_ct4ct3] vmax: SCENARIO COMPLETE (6.6 min)
+[2026-07-08 00:52:07] --- Run 28/44: CT2_ct4ct3 / r2-kde ---
+[2026-07-08 00:52:07] [CT2_ct4ct3] r2-kde: starting best-fit optimization
+[2026-07-08 00:52:07] [CT2_ct4ct3] r2-kde: best-fit done (0.0 min)
+[2026-07-08 00:52:07] [CT2_ct4ct3] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-08 00:59:02] [CT2_ct4ct3] r2-kde: bootstrap done (6.9 min)
+[2026-07-08 00:59:30] [CT2_ct4ct3] r2-kde: self-comparison done (0.5 min)
+[2026-07-08 00:59:32] [CT2_ct4ct3] r2-kde: figures + exports saved
+[2026-07-08 00:59:32] [CT2_ct4ct3] r2-kde: SCENARIO COMPLETE (7.4 min)
+[2026-07-08 00:59:32] --- Run 29/44: CT2_ct10ct3 / vmax ---
+[2026-07-08 00:59:32] [CT2_ct10ct3] vmax: starting best-fit optimization
+[2026-07-08 00:59:32] [CT2_ct10ct3] vmax: best-fit done (0.0 min)
+[2026-07-08 00:59:32] [CT2_ct10ct3] vmax: starting bootstrap (10000 iterations)
+[2026-07-08 01:04:34] [CT2_ct10ct3] vmax: bootstrap done (5.0 min)
+[2026-07-08 01:06:09] [CT2_ct10ct3] vmax: self-comparison done (1.6 min)
+[2026-07-08 01:06:11] [CT2_ct10ct3] vmax: figures + exports saved
+[2026-07-08 01:06:11] [CT2_ct10ct3] vmax: SCENARIO COMPLETE (6.6 min)
+[2026-07-08 01:06:11] --- Run 30/44: CT2_ct10ct3 / r2-kde ---
+[2026-07-08 01:06:11] [CT2_ct10ct3] r2-kde: starting best-fit optimization
+[2026-07-08 01:06:11] [CT2_ct10ct3] r2-kde: best-fit done (0.0 min)
+[2026-07-08 01:06:11] [CT2_ct10ct3] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-08 01:13:08] [CT2_ct10ct3] r2-kde: bootstrap done (6.9 min)
+[2026-07-08 01:13:37] [CT2_ct10ct3] r2-kde: self-comparison done (0.5 min)
+[2026-07-08 01:13:39] [CT2_ct10ct3] r2-kde: figures + exports saved
+[2026-07-08 01:13:39] [CT2_ct10ct3] r2-kde: SCENARIO COMPLETE (7.5 min)
+[2026-07-08 01:13:39] --- Run 31/44: CT2_ct11ct3 / vmax ---
+[2026-07-08 01:13:39] [CT2_ct11ct3] vmax: starting best-fit optimization
+[2026-07-08 01:13:39] [CT2_ct11ct3] vmax: best-fit done (0.0 min)
+[2026-07-08 01:13:39] [CT2_ct11ct3] vmax: starting bootstrap (10000 iterations)
+[2026-07-08 01:18:42] [CT2_ct11ct3] vmax: bootstrap done (5.1 min)
+[2026-07-08 01:20:16] [CT2_ct11ct3] vmax: self-comparison done (1.6 min)
+[2026-07-08 01:20:19] [CT2_ct11ct3] vmax: figures + exports saved
+[2026-07-08 01:20:19] [CT2_ct11ct3] vmax: SCENARIO COMPLETE (6.7 min)
+[2026-07-08 01:20:19] --- Run 32/44: CT2_ct11ct3 / r2-kde ---
+[2026-07-08 01:20:19] [CT2_ct11ct3] r2-kde: starting best-fit optimization
+[2026-07-08 01:20:19] [CT2_ct11ct3] r2-kde: best-fit done (0.0 min)
+[2026-07-08 01:20:19] [CT2_ct11ct3] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-08 01:27:06] [CT2_ct11ct3] r2-kde: bootstrap done (6.8 min)
+[2026-07-08 01:27:35] [CT2_ct11ct3] r2-kde: self-comparison done (0.5 min)
+[2026-07-08 01:27:37] [CT2_ct11ct3] r2-kde: figures + exports saved
+[2026-07-08 01:27:37] [CT2_ct11ct3] r2-kde: SCENARIO COMPLETE (7.3 min)
+[2026-07-08 01:27:37] --- Run 33/44: CT2_ct8_2ct3 / vmax ---
+[2026-07-08 01:27:37] [CT2_ct8_2ct3] vmax: starting best-fit optimization
+[2026-07-08 01:27:37] [CT2_ct8_2ct3] vmax: best-fit done (0.0 min)
+[2026-07-08 01:27:37] [CT2_ct8_2ct3] vmax: starting bootstrap (10000 iterations)
+[2026-07-08 01:32:40] [CT2_ct8_2ct3] vmax: bootstrap done (5.1 min)
+[2026-07-08 01:34:14] [CT2_ct8_2ct3] vmax: self-comparison done (1.6 min)
+[2026-07-08 01:34:17] [CT2_ct8_2ct3] vmax: figures + exports saved
+[2026-07-08 01:34:17] [CT2_ct8_2ct3] vmax: SCENARIO COMPLETE (6.7 min)
+[2026-07-08 01:34:17] --- Run 34/44: CT2_ct8_2ct3 / r2-kde ---
+[2026-07-08 01:34:17] [CT2_ct8_2ct3] r2-kde: starting best-fit optimization
+[2026-07-08 01:34:17] [CT2_ct8_2ct3] r2-kde: best-fit done (0.0 min)
+[2026-07-08 01:34:17] [CT2_ct8_2ct3] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-08 01:40:55] [CT2_ct8_2ct3] r2-kde: bootstrap done (6.6 min)
+[2026-07-08 01:41:24] [CT2_ct8_2ct3] r2-kde: self-comparison done (0.5 min)
+[2026-07-08 01:41:26] [CT2_ct8_2ct3] r2-kde: figures + exports saved
+[2026-07-08 01:41:26] [CT2_ct8_2ct3] r2-kde: SCENARIO COMPLETE (7.2 min)
+[2026-07-08 01:41:26] --- Run 35/44: CT9_ct4ct3 / vmax ---
+[2026-07-08 01:41:26] [CT9_ct4ct3] vmax: starting best-fit optimization
+[2026-07-08 01:41:26] [CT9_ct4ct3] vmax: best-fit done (0.0 min)
+[2026-07-08 01:41:26] [CT9_ct4ct3] vmax: starting bootstrap (10000 iterations)
+[2026-07-08 01:46:29] [CT9_ct4ct3] vmax: bootstrap done (5.0 min)
+[2026-07-08 01:48:03] [CT9_ct4ct3] vmax: self-comparison done (1.6 min)
+[2026-07-08 01:48:05] [CT9_ct4ct3] vmax: figures + exports saved
+[2026-07-08 01:48:05] [CT9_ct4ct3] vmax: SCENARIO COMPLETE (6.7 min)
+[2026-07-08 01:48:05] --- Run 36/44: CT9_ct4ct3 / r2-kde ---
+[2026-07-08 01:48:05] [CT9_ct4ct3] r2-kde: starting best-fit optimization
+[2026-07-08 01:48:06] [CT9_ct4ct3] r2-kde: best-fit done (0.0 min)
+[2026-07-08 01:48:06] [CT9_ct4ct3] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-08 01:55:00] [CT9_ct4ct3] r2-kde: bootstrap done (6.9 min)
+[2026-07-08 01:55:29] [CT9_ct4ct3] r2-kde: self-comparison done (0.5 min)
+[2026-07-08 01:55:31] [CT9_ct4ct3] r2-kde: figures + exports saved
+[2026-07-08 01:55:31] [CT9_ct4ct3] r2-kde: SCENARIO COMPLETE (7.4 min)
+[2026-07-08 01:55:31] --- Run 37/44: CT9_ct10ct3 / vmax ---
+[2026-07-08 01:55:31] [CT9_ct10ct3] vmax: starting best-fit optimization
+[2026-07-08 01:55:31] [CT9_ct10ct3] vmax: best-fit done (0.0 min)
+[2026-07-08 01:55:31] [CT9_ct10ct3] vmax: starting bootstrap (10000 iterations)
+[2026-07-08 02:00:36] [CT9_ct10ct3] vmax: bootstrap done (5.1 min)
+[2026-07-08 02:02:11] [CT9_ct10ct3] vmax: self-comparison done (1.6 min)
+[2026-07-08 02:02:13] [CT9_ct10ct3] vmax: figures + exports saved
+[2026-07-08 02:02:13] [CT9_ct10ct3] vmax: SCENARIO COMPLETE (6.7 min)
+[2026-07-08 02:02:13] --- Run 38/44: CT9_ct10ct3 / r2-kde ---
+[2026-07-08 02:02:13] [CT9_ct10ct3] r2-kde: starting best-fit optimization
+[2026-07-08 02:02:14] [CT9_ct10ct3] r2-kde: best-fit done (0.0 min)
+[2026-07-08 02:02:14] [CT9_ct10ct3] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-08 02:09:06] [CT9_ct10ct3] r2-kde: bootstrap done (6.9 min)
+[2026-07-08 02:09:34] [CT9_ct10ct3] r2-kde: self-comparison done (0.5 min)
+[2026-07-08 02:09:36] [CT9_ct10ct3] r2-kde: figures + exports saved
+[2026-07-08 02:09:36] [CT9_ct10ct3] r2-kde: SCENARIO COMPLETE (7.4 min)
+[2026-07-08 02:09:36] --- Run 39/44: CT9_ct11ct3 / vmax ---
+[2026-07-08 02:09:36] [CT9_ct11ct3] vmax: starting best-fit optimization
+[2026-07-08 02:09:36] [CT9_ct11ct3] vmax: best-fit done (0.0 min)
+[2026-07-08 02:09:36] [CT9_ct11ct3] vmax: starting bootstrap (10000 iterations)
+[2026-07-08 02:14:40] [CT9_ct11ct3] vmax: bootstrap done (5.1 min)
+[2026-07-08 02:16:15] [CT9_ct11ct3] vmax: self-comparison done (1.6 min)
+[2026-07-08 02:16:18] [CT9_ct11ct3] vmax: figures + exports saved
+[2026-07-08 02:16:18] [CT9_ct11ct3] vmax: SCENARIO COMPLETE (6.7 min)
+[2026-07-08 02:16:18] --- Run 40/44: CT9_ct11ct3 / r2-kde ---
+[2026-07-08 02:16:18] [CT9_ct11ct3] r2-kde: starting best-fit optimization
+[2026-07-08 02:16:18] [CT9_ct11ct3] r2-kde: best-fit done (0.0 min)
+[2026-07-08 02:16:18] [CT9_ct11ct3] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-08 02:23:07] [CT9_ct11ct3] r2-kde: bootstrap done (6.8 min)
+[2026-07-08 02:23:36] [CT9_ct11ct3] r2-kde: self-comparison done (0.5 min)
+[2026-07-08 02:23:38] [CT9_ct11ct3] r2-kde: figures + exports saved
+[2026-07-08 02:23:38] [CT9_ct11ct3] r2-kde: SCENARIO COMPLETE (7.3 min)
+[2026-07-08 02:23:38] --- Run 41/44: CT9_ct8_2ct3 / vmax ---
+[2026-07-08 02:23:38] [CT9_ct8_2ct3] vmax: starting best-fit optimization
+[2026-07-08 02:23:38] [CT9_ct8_2ct3] vmax: best-fit done (0.0 min)
+[2026-07-08 02:23:38] [CT9_ct8_2ct3] vmax: starting bootstrap (10000 iterations)
+[2026-07-08 02:28:43] [CT9_ct8_2ct3] vmax: bootstrap done (5.1 min)
+[2026-07-08 02:30:18] [CT9_ct8_2ct3] vmax: self-comparison done (1.6 min)
+[2026-07-08 02:30:20] [CT9_ct8_2ct3] vmax: figures + exports saved
+[2026-07-08 02:30:20] [CT9_ct8_2ct3] vmax: SCENARIO COMPLETE (6.7 min)
+[2026-07-08 02:30:20] --- Run 42/44: CT9_ct8_2ct3 / r2-kde ---
+[2026-07-08 02:30:20] [CT9_ct8_2ct3] r2-kde: starting best-fit optimization
+[2026-07-08 02:30:20] [CT9_ct8_2ct3] r2-kde: best-fit done (0.0 min)
+[2026-07-08 02:30:20] [CT9_ct8_2ct3] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-08 02:36:58] [CT9_ct8_2ct3] r2-kde: bootstrap done (6.6 min)
+[2026-07-08 02:37:26] [CT9_ct8_2ct3] r2-kde: self-comparison done (0.5 min)
+[2026-07-08 02:37:28] [CT9_ct8_2ct3] r2-kde: figures + exports saved
+[2026-07-08 02:37:28] [CT9_ct8_2ct3] r2-kde: SCENARIO COMPLETE (7.1 min)
+[2026-07-08 02:37:28] --- Run 43/44: CT9_ct2ct3 / vmax ---
+[2026-07-08 02:37:28] [CT9_ct2ct3] vmax: starting best-fit optimization
+[2026-07-08 02:37:28] [CT9_ct2ct3] vmax: best-fit done (0.0 min)
+[2026-07-08 02:37:28] [CT9_ct2ct3] vmax: starting bootstrap (10000 iterations)
+[2026-07-08 02:42:26] [CT9_ct2ct3] vmax: bootstrap done (5.0 min)
+[2026-07-08 02:44:00] [CT9_ct2ct3] vmax: self-comparison done (1.6 min)
+[2026-07-08 02:44:02] [CT9_ct2ct3] vmax: figures + exports saved
+[2026-07-08 02:44:02] [CT9_ct2ct3] vmax: SCENARIO COMPLETE (6.6 min)
+[2026-07-08 02:44:02] --- Run 44/44: CT9_ct2ct3 / r2-kde ---
+[2026-07-08 02:44:02] [CT9_ct2ct3] r2-kde: starting best-fit optimization
+[2026-07-08 02:44:03] [CT9_ct2ct3] r2-kde: best-fit done (0.0 min)
+[2026-07-08 02:44:03] [CT9_ct2ct3] r2-kde: starting bootstrap (10000 iterations)
+[2026-07-08 02:48:32] [CT9_ct2ct3] r2-kde: bootstrap done (4.5 min)
+[2026-07-08 02:49:00] [CT9_ct2ct3] r2-kde: self-comparison done (0.5 min)
+[2026-07-08 02:49:02] [CT9_ct2ct3] r2-kde: figures + exports saved
+[2026-07-08 02:49:02] [CT9_ct2ct3] r2-kde: SCENARIO COMPLETE (5.0 min)
+[2026-07-08 02:49:02] All runs finished (44/44 attempted).
