@@ -13,6 +13,8 @@ Created on Sat Feb 18 07:43:18 2017
 import detritalpy.MDAfuncs as MDA
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as colors
+import matplotlib.cm as cmx
 import pathlib
 import pandas as pd
 from scipy.interpolate import interp1d
@@ -172,7 +174,7 @@ def plotSampleDist(main_byid_df, ID_col = 'Sample_ID', bestAge = 'BestAge', numB
     numSamples = len(main_byid_df[ID_col])
     c = 0 # Counter variable
     for sample in main_byid_df[ID_col]:
-        numGrains[c] = len(main_byid_df.loc[sample,bestAge])
+        numGrains[c] = len(np.atleast_1d(main_byid_df.loc[sample,bestAge])) # Fixes an error if there's just one age
         c += 1
     fig, ax = plt.subplots(1,1)
     ax.hist(list(numGrains), numBins)
@@ -252,12 +254,12 @@ def sampleToData(sampleList, main_byid_df, sampleLabel='Sample_ID', bestAge='Bes
                     print('Function stopped')
                     stop = True
                     break            
-            ages.append(main_byid_df.loc[sample, bestAge])
+            ages.append(np.atleast_1d(main_byid_df.loc[sample, bestAge]))
             if sigma == '2sigma':
-                errors.append(main_byid_df.loc[sample, bestAgeErr]/2.)
+                errors.append(np.atleast_1d(main_byid_df.loc[sample, bestAgeErr]/2.))
             else:
-                errors.append(main_byid_df.loc[sample, bestAgeErr])
-            numGrains.append(len(main_byid_df.loc[sample, bestAge]))
+                errors.append(np.atleast_1d(main_byid_df.loc[sample, bestAgeErr]))
+            numGrains.append(len(np.atleast_1d(main_byid_df.loc[sample, bestAge]))) # Fixes an error if there's only one age
             labels.append(main_byid_df.loc[sample,sampleLabel])
 
     if verify:
@@ -419,10 +421,13 @@ def plotAll_1(sampleList, ages, errors, numGrains, labels, whatToPlot, plotCDF, 
     # Calculate the number of grains per sample or sample group plotted
     numGrainsPlotted = np.zeros_like(numGrains)
     for i in range(len(sampleList)):
-        if isinstance(x1, list) == False:
-            numGrainsPlotted[i] = len([elem for elem in ages[i] if (elem < x2 and elem > x1)]) # Number of grains in plot
+        ages_i = np.array(ages[i]) # Ensure a numpy array
+        if not isinstance(x1, list):
+            numGrainsPlotted[i] = np.sum((ages_i > x1) & (ages_i < x2)) 
+            # numGrainsPlotted[i] = len([elem for elem in ages[i] if (elem < x2 and elem > x1)]) # Number of grains in plot
         else:
-            numGrainsPlotted[i] = len([elem for elem in ages[i] if (elem < x2[-1] and elem > x1[0])]) # Number of grains in plot (note that this assumes no gaps in what you are plotting!!!)
+            numGrainsPlotted[i] = np.sum((ages_i > x1[0]) & (ages_i < x2[-1]))
+            # numGrainsPlotted[i] = len([elem for elem in ages[i] if (elem < x2[-1] and elem > x1[0])]) # Number of grains in plot (note that this assumes no gaps in what you are plotting!!!)
         
     # Number of samples per plotted distribution
     N = np.zeros_like(numGrains)
@@ -1961,7 +1966,12 @@ def plotFoliumMap(sampleList, main_byid_df, ages, errors, numGrains, plotMapKDE,
 
 def MDAtoCSV(sampleList, ages, errors, numGrains, labels, fileName, sortBy, barWidth, plotWidth, plotHeight, ageColors, alpha, makePlot, fillMDACalcs):
     """
-    Calculate the maxmium depositional age (MDA) for a sample or group of samples. Results will be exported to a CSV file. Individual plots can be made for each sample or group of samples showing the youngest grains and different calculations of the maxmimum depositional age.
+    Note: This function is deprecated as of June 2026 (notebook v. 1.4.3+)
+    Plesae use calcMDA_2()
+
+    Calculate the maxmium depositional age (MDA) for a sample or group of samples. Results will be exported to a CSV file.
+    Individual plots can be made for each sample or group of samples showing the youngest grains and different calculations
+    of the maxmimum depositional age.
 
     Parameters
     ----------
@@ -2020,25 +2030,29 @@ def MDAtoCSV(sampleList, ages, errors, numGrains, labels, fileName, sortBy, barW
             data_err1s_ageSort.sort(key=lambda d: d[0]) # Sort based on age
             data_err1s.sort(key=lambda d: d[0] + d[1]) # Sort based on age + 1s error
             data_err2s.sort(key=lambda d: d[0] + d[1]) # Sort based on age + 2s error
-            YSG = data_err1s[0][0]
-            YSG_err1s = data_err1s[0][1]
+
+            YSG_result = MDA.YSG(ages[i], errors[i], sigma=1)
+            YSG = YSG_result[0][0]
+            YSG_err1s = YSG_result[0][1]/2. # Because MDA.YSG() returns 2-sigma uncertainties
 
             YC1s_cluster = MDA.find_youngest_cluster(data_err1s, min_cluster_size=2, sort_by='none', contiguous=True)
-            YC1S_WM = weightedMean(np.array([d[0] for d in YC1s_cluster]), np.array([d[1] for d in YC1s_cluster]))
+            if len(YC1s_cluster) == 0: # If calculation did not return a value
+                YC1S_WM = [np.nan, np.nan, np.nan, np.nan]
+            else:
+                YC1S_WM = weightedMean(np.array([d[0] for d in YC1s_cluster]), np.array([d[1] for d in YC1s_cluster]))
 
             YC2s_cluster = MDA.find_youngest_cluster(data_err2s, min_cluster_size=3, sort_by='none', contiguous=True)
-            YC2S_WM = weightedMean(np.array([d[0] for d in YC2s_cluster]), np.array([d[1] for d in YC2s_cluster])/2.)
+            if len(YC2s_cluster) == 0: # If calculation did not return a value
+                YC2S_WM = [np.nan, np.nan, np.nan, np.nan]
+            else:
+                YC2S_WM = weightedMean(np.array([d[0] for d in YC2s_cluster]), np.array([d[1] for d in YC2s_cluster])/2.)
 
             writer.writerow((labels[i],numGrains[i], YSG, YSG_err1s, YC1S_WM[0], YC1S_WM[1]/2, YC1S_WM[2], len(YC1s_cluster), YC2S_WM[0], YC2S_WM[1]/2, YC2S_WM[2], len(YC2s_cluster)))
-            
+
             if makePlot:
                 # Specify plot characteristics and axes    
-                if N > 1:
-                    ax_i.set_ylabel("Age (Ma)")
-                    ax_i.get_xaxis().set_ticks([])
-                else:
-                    ax.set_ylabel("Age (Ma)")
-                    ax.get_xaxis().set_ticks([])
+                ax_i.set_ylabel("Age (Ma)")
+                ax_i.get_xaxis().set_ticks([])
                 
                 # Choose which way to sort the ages
                 if sortBy == 'mean':
@@ -2049,15 +2063,19 @@ def MDAtoCSV(sampleList, ages, errors, numGrains, labels, fileName, sortBy, barW
                     ageErrors = data_err2s
                 
                 # Determine how many grains to plot per sample or sample group
-                toPlot = np.zeros_like(np.empty(shape=(len(ageErrors),1)))
-                YC1S_max = YC1s_cluster[-1][0] + YC1s_cluster[-1][1]
-                YC2S_max = YC2s_cluster[-1][0] + YC2s_cluster[-1][1] 
-                # YC1S_max = data_err1s[YC1S_imax][0]+data_err1s[YC1S_imax][1]
-                # YC2S_max = data_err2s[YC2S_imax][0]+data_err2s[YC2S_imax][1]
-                if YC1S_max >= YC2S_max:
-                    plotMax = YC1S_max
+                # toPlot = np.zeros_like(np.empty(shape=(len(ageErrors),1)))
+                toPlot = np.zeros((len(ageErrors),1))
+                YSG_max = YSG + YSG_err1s*2
+                if len(YC1s_cluster) != 0:
+                    YC1S_max = YC1s_cluster[-1][0] + YC1s_cluster[-1][1]
                 else:
-                    plotMax = YC2S_max
+                    YC1S_max = 0
+                if len(YC2s_cluster) != 0:
+                    YC2S_max = YC2s_cluster[-1][0] + YC2s_cluster[-1][1]
+                else:
+                    YC2S_max = 0
+                plotMax = np.max([YSG_max, YC1S_max, YC2S_max])
+
                 for j in range(len(ageErrors)):
                     if (sortBy == 'mean' or sortBy == '1sigma'):
                         if ageErrors[j][0]+ageErrors[j][1]*2 > plotMax:
@@ -2101,24 +2119,25 @@ def MDAtoCSV(sampleList, ages, errors, numGrains, labels, fileName, sortBy, barW
                         ax_i.bar(x = barx[j], height = height*2, width=barWidth, bottom = ageErrors[j][0]-ageErrors[j][1]*2, color='gray', zorder=9)
                     if sortBy == '2sigma':
                         ax_i.bar(x = barx[j], height = height/2, width=barWidth, bottom = ageErrors[j][0]-ageErrors[j][1]/2, color='black', zorder=10)
-                        ax_i.bar(x = barx[j], height = height, width=barWidth, bottom = ageErrors[j][0]-ageErrors[j][1], color='gray', zorder=9)                    
+                        ax_i.bar(x = barx[j], height = height, width=barWidth, bottom = ageErrors[j][0]-ageErrors[j][1], color='gray', zorder=9)               
                 ax_i.grid(True)
                 xmin, xmax = ax_i.get_xlim()
                 ymin, ymax = ax_i.get_ylim()
                 xdif = xmax-xmin
                 ydif = ymax-ymin
-                ax_i.text(xmin+xdif*0.02, ymax+ydif*0.02, s=labels[i])
-                ax_i.text(xmin+xdif*0.02, ymax+ydif*-0.07, s=("YSG: "+str(round(YSG,1))+"$\pm$"+str(round(YSG_err1s,2))+" Ma"), fontsize='small', backgroundcolor='white')
-                ax_i.text(xmin+xdif*0.02, ymax+ydif*-0.14, s=("YC1"+r'$\sigma$'+"(2+): "+str(round(YC1S_WM[0],1))+"$\pm$"+str(round(YC1S_WM[1]/2,2))+" Ma"), fontsize='small', backgroundcolor='white')
-                ax_i.text(xmin+xdif*0.02, ymax+ydif*-0.21, s=("YC2"+r'$\sigma$'+"(3+): "+str(round(YC2S_WM[0],1))+"$\pm$"+str(round(YC2S_WM[1]/2,2))+" Ma"), fontsize='small', backgroundcolor='white')
-                ax_i.text(xmin+xdif*plotWidth*0.05, ymax+ydif*0.02, s=("Calculated uncertainties are reported at the 1"+r'$\sigma$'+" level"), fontsize='small')
-
+                ax_i.text(xmin+xdif*0.02, ymax+ydif*0.02, s=labels[i], zorder=99)
+                ax_i.text(xmin+xdif*0.02, ymax+ydif*-0.07, s=("YSG: "+str(round(YSG,1))+"$\pm$"+str(round(YSG_err1s,2))+" Ma"), fontsize='small', bbox=dict(edgecolor='white', facecolor='white', alpha=0.9), zorder=99)
+                ax_i.text(xmin+xdif*0.02, ymax+ydif*-0.14, s=("YC1"+r'$\sigma$'+"(2+): "+str(round(YC1S_WM[0],1))+"$\pm$"+str(round(YC1S_WM[1]/2,2))+" Ma"), fontsize='small', bbox=dict(edgecolor='white', facecolor='white', alpha=0.9), zorder=99)
+                ax_i.text(xmin+xdif*0.02, ymax+ydif*-0.21, s=("YC2"+r'$\sigma$'+"(3+): "+str(round(YC2S_WM[0],1))+"$\pm$"+str(round(YC2S_WM[1]/2,2))+" Ma"), fontsize='small', bbox=dict(edgecolor='white', facecolor='white', alpha=0.9), zorder=99)
+                ax_i.text(xmin+xdif*plotWidth*0.05, ymax+ydif*0.02, s=("Calculated uncertainties are reported at the 1"+r'$\sigma$'+" level"), fontsize='small', zorder=99)
         if makePlot:
             return fig
 
 class MDS_class:
     """
     This is a class that computes multidimensional scaling (MDS) for distributive data (e.g., detrital zircon U-Pb age distributions)
+    Note: Initialization of non-metric MDS with metric MDS positions is no longer supported as of v1.4.6 due to changes in the
+    behavior of sklearn.manifold.MDS.
 
     Required Parameters
     ----------
@@ -2149,7 +2168,7 @@ class MDS_class:
     See Vermeesch (2013): Chemical Geology (https://doi.org/10.1016/j.chemgeo.2013.01.010) and the documentation of sklearn.manifold.MDS for more information on multidimensional scaling
 
     """
-    def __init__(self, ages, errors, labels, sampleList, metric=False, criteria='Vmax', bw='optimizedFixed', n_init='metric', max_iter=1000, x1=0, x2=4500, xdif=1, min_dim=1, max_dim=3, dim=2, bw_x=None):
+    def __init__(self, ages, errors, labels, sampleList, metric=False, criteria='Vmax', bw='optimizedFixed', n_init=100, max_iter=1000, x1=0, x2=4500, xdif=1, min_dim=1, max_dim=3, dim=2, bw_x=None, normalized_stress='auto'):
         # Import required modules
         from scipy import stats
         from sklearn import manifold
@@ -2164,6 +2183,7 @@ class MDS_class:
         self.bw = bw
         self.n_init = n_init
         self.max_iter = max_iter
+        self.normalized_stress = normalized_stress
 
         # Generate sample labels for plotting
         if type(self.sampleList[0])==tuple:
@@ -2229,22 +2249,31 @@ class MDS_class:
 
         # Loop through and perform MDS for each number of dimensions considered
         for i in range(max_dim-min_dim+1):
-            if self.metric or self.n_init == 'metric': # Perform metric MDS
-                self.mds = manifold.MDS(n_components = min_dim+i, random_state=1, dissimilarity='precomputed', max_iter= self.max_iter, normalized_stress='auto')
-                self.pos = self.mds.fit(self.matrix).embedding_
-                stress = self.mds.fit(self.matrix).stress_
-                if not self.metric: # Non-metric MDS (metric MDS  used as initial configuration)
-                    self.nmds = manifold.MDS(n_components = min_dim+i, metric=False, random_state=1, dissimilarity='precomputed', n_init = 1, max_iter= self.max_iter, normalized_stress='auto')
-                    self.npos = self.nmds.fit_transform(self.matrix, init=self.pos)
-                    stress = self.nmds.fit(self.matrix, init=self.pos).stress_
-            else: # Non-metric MDS (metric MDS not used as initial configuration)
-                self.nmds = manifold.MDS(n_components = min_dim+i, metric=False, random_state=1, dissimilarity='precomputed', n_init = self.n_init, max_iter= self.max_iter, normalized_stress='auto')
-                self.npos = self.nmds.fit_transform(self.matrix)
-                stress = self.nmds.fit(self.matrix).stress_
-
-            if self.metric:
+            n_components = min_dim+i
+            if self.metric: # Perform metric MDS
+                self.mds = manifold.MDS(
+                    n_components = n_components,
+                    metric=True,
+                    random_state=i+1,
+                    dissimilarity='precomputed',
+                    n_init=self.n_init if isinstance(self.n_init, int) else 100,
+                    max_iter= self.max_iter,
+                    normalized_stress=normalized_stress
+                )
+                self.pos = self.mds.fit_transform(self.matrix)
+                stress = self.mds.stress_
                 m = self.pos
-            else:
+            else: # Non-metric MDS (metric MDS not used as initial configuration)
+                self.nmds = manifold.MDS(
+                    n_components = n_components,
+                    metric=False,
+                    random_state=i+1,
+                    dissimilarity='precomputed',
+                    n_init = self.n_init if isinstance(self.n_init, int) else 100,
+                    max_iter= self.max_iter,
+                    normalized_stress=normalized_stress)
+                self.npos = self.nmds.fit_transform(self.matrix)
+                stress = self.nmds.stress_
                 m = self.npos
 
             self.stressArray.append(stress)
@@ -2268,16 +2297,6 @@ class MDS_class:
                         self.x_dissimilarity.append(self.matrix[i,j])
             self.y_distancesArray.append(self.y_distances)
             self.x_dissimilarityArray.append(self.x_dissimilarity)
-
-            # Calculate the Stress-1 of Kruskal (1964) following Vermeesch (2013): Chemical Geology
-            # As of v.1.3.18, Stress-1 is no longer calculated
-            #for i in range(len(self.x_dissimilarity)):
-            #    S1_numerator = []
-            #    S1_denominator = []
-            #    for j in range(len(self.x_dissimilarity)):
-            #        S1_numerator.append(((self.x_dissimilarity[j]-self.y_distances[j])**2))
-            #        S1_denominator.append(self.y_distances[j]**2)
-            #self.stress1Array.append(np.sqrt(np.sum(S1_numerator)/np.sum(S1_denominator)))
 
     def QQplot(self, figsize=(12,12), savePlot=True, fileName='QQplot.pdf', halfMatrix=True):
         """
@@ -2555,11 +2574,14 @@ class MDS_class:
                                 y = [0] + np.sin(np.linspace(2*math.pi*histP[j], 2*math.pi*histP[j+1], 100)).tolist()
                                 if not equalAspect:
                                     y = [i/vertScaleAdjust for i in y]
-                                ax.fill(np.array(x)*self.pieSize+self.mArray[self.dim-self.min-dim][i][0],np.array(y)*self.pieSize+self.mArray[self.dim-self.min-dim][i][1],facecolor=self.agebinsc[j])
+                                ax.fill(np.array(x)*self.pieSize+self.mArray[self.dim-self.min_dim][i][0],np.array(y)*self.pieSize+self.mArray[self.dim-self.min_dim][i][1],facecolor=self.agebinsc[j])
                     if plotLabels:
                         ax.text(self.mArray[self.dim-self.min_dim][i][0]+self.pieSize/1.5,self.mArray[self.dim-self.min_dim][i][1]+self.pieSize/1.5,self.labels[i])
                 if self.pieType == 'Category':
-                    hist = list(self.df.loc[self.sampleList[i]][self.pieCategories])
+                    if type(self.sampleList[i])==tuple:
+                        hist = list(self.df.loc[self.sampleList[i][1]][self.pieCategories])
+                    else:
+                        hist = list(self.df.loc[self.sampleList[i]][self.pieCategories])
                     histP = np.insert(np.cumsum(hist), 0, 0)
                     for j in range(len(hist)): # One loop for each bin
                         x = [0] + np.cos(np.linspace(2*math.pi*histP[j], 2*math.pi*histP[j+1], 100)).tolist()
@@ -2850,7 +2872,7 @@ def plotDoubleDating(main_byid_df, sampleList, x1, x2, y1, y2, plotKDE, colorKDE
                         PDP_agePart = np.arange(xage1, xage1+len(PDPpart), xdif)
                         axsPDP.fill_between(PDP_agePart, 0, PDPpart, alpha = 1, color=agebinsc[j])
         if plotKDE:
-            xKDE =  KDEcalcAges(ages=x, xdif=xdif, bw=bw, bw_x=None)
+            xKDE =  KDEcalcAges(ages=[xF], xdif=xdif, bw=bw, bw_x=None)
             axsKDE = axs['1,0'].twinx()
             axsKDE.plot(xKDE[0],xKDE[1][0], color='black', lw=1)
             axsKDE.set_xlim(x1, x2)
@@ -3315,10 +3337,11 @@ def PDPcalcAges(ages, errors, x1=0, x2=4500, xdif=1, cumulative=False):
             age = data[j]
             error = data_err[j]
             pdf = norm.pdf(PDP_age, age, error)
-            pdf_cum = pdf_cum + pdf 
-        pdf_cum = np.around(pdf_cum/np.trapz(pdf_cum), decimals=10)
+            pdf_cum = pdf_cum + pdf
+        # pdf_cum = np.around(pdf_cum/np.trapz(pdf_cum), decimals=10)
+        pdf_cum = np.around(pdf_cum/np.sum(pdf_cum), decimals=10)
         if cumulative:
-            pdf_cum = np.cumsum(pdf_cum)        
+            pdf_cum = np.cumsum(pdf_cum)
         PDP[i] = pdf_cum
     PDP_age = PDP_age[int(x1/xdif):int((x2+xdif)/xdif)] # Only select the values within the specified plotting age range
     PDPportionRange = np.arange(x1, x2+xdif, xdif)
@@ -3476,7 +3499,7 @@ def KDEcalcAges_KDEpy(ages, x1=0, x2=4500, xdif=1, bw=2.5, cumulative=False):
         KDEportion[i] = KDE[i][int(x1/xdif):int((x2+xdif)/xdif)] # Only select the values within the specified plotting age range
     return KDE_age, KDEportion 
 
-def KDEcalcAgesLocalAdapt(ages, x1=0, x2=4500, xdif=1, cumulative=False):
+def KDEcalcAgesGlobalAdapt(ages, x1=0, x2=4500, xdif=1, cumulative=False):
     """
     Computes the KDE for an array of ages using an optimized, fixed kernal bandwidth following Shimazaki and Shinomoto, 2010: Journal of Computational Neuroscience, v. 29, p. 171-182, doi:10.1007/s10827-009-0180-4.
     
@@ -3515,7 +3538,7 @@ def KDEcalcAgesLocalAdapt(ages, x1=0, x2=4500, xdif=1, cumulative=False):
         KDEportion[i] = KDE[i][int(x1/xdif):int((x2+xdif)/xdif)] # Only select the values within the specified plotting age range
     return KDE_age, KDEportion
        
-def KDEcalcAgesGlobalAdapt(ages, x1=0, x2=4500, xdif=1, cumulative=False):
+def KDEcalcAgesLocalAdapt(ages, x1=0, x2=4500, xdif=1, cumulative=False):
     """
     Computes the KDE for an array of ages using an optimized, variable kernal bandwidth following Shimazaki and Shinomoto, 2010: Journal of Computational Neuroscience, v. 29, p. 171-182, doi:10.1007/s10827-009-0180-4.
     
@@ -3877,6 +3900,9 @@ def exportPeakAge(labels, peakAges, peakAgesGrains, fileName='peakAges.csv'):
             writer.writerow((peakAgesGrains[i][j]) for j in range(len(peakAgesGrains[i])))
 
 def calcMDA(ages, errors):
+    '''
+    Note: This function is now deprecated as of June, 2026
+    '''
 
     for i in range(len(ages)):
         error1s = errors[i]
@@ -3897,3 +3923,848 @@ def calcMDA(ages, errors):
         YC2S_WM = weightedMean(np.array([d[0] for d in YC2s_cluster]), np.array([d[1] for d in YC2s_cluster])/2.)
 
     return YSG, YSG_err1s, YC1S_WM[0], YC1S_WM[1]/2, YC1S_WM[2], len(YC1s_cluster), YC2S_WM[0], YC2S_WM[1]/2, YC2S_WM[2], len(YC2s_cluster)
+
+
+def filterByAnalyses(analyses_df, samples_df, filters, sampleList = None, verbose=True, ID_col='Sample_ID'):
+    '''
+    Filters an analysis DataFrame and returns a filtered main_byid_df DataFrame
+    
+    Parameters
+    ----------
+    analyses_df : Pandas DataFrame of the analyses table such as is returned by loadDataExcel()
+    samples_df : Pandas DataFrame of the samples table such as is returned by loadDataExcel()
+    filters : A list of one or more lists, each of which includes the column to filter by, the criteria ('less than' or 'greater than'), and the value to filter by. len(filters) should equal the number of filters. 
+                filters = [['Disc_pct', 'less than', 5],
+                           ['Disc_pct', 'greater than', -5],
+                           ['U_ppm', 'less than', 2000]]
+    verbose : (optional) Set to True to print a warning if a sample has no data after filtering (default value is True)
+    
+    Returns
+    -------
+    df : the filtered Pandas DataFrame (main_byid_df)
+    '''
+    analyses_df_filtered = analyses_df.copy() # Create a deep copy of the analyses df
+    for item in filters:
+        if item[1] == 'less than':
+            analyses_df_filtered = lessThan(analyses_df_filtered,item[0],item[2])
+        elif item[1] == 'greater than':
+            analyses_df_filtered = greaterThan(analyses_df_filtered,item[0],item[2])
+        else:
+            raise ValueError(f"Unsupported filter criteria: '{item[1]}'. Use 'less than' or 'greater than'.")
+    analyses_df_filtered.set_index(ID_col,inplace=True,drop=False)
+    if analyses_df_filtered.shape[0] == 0: # Check to see if empty
+        print('Warning: no data returned')
+        
+    # Check to make sure samples have data after filtering
+    if verbose:
+        # Determine which samples to check
+        if sampleList is None:
+            samples_to_check = list(samples_df[ID_col])
+        elif isinstance(sampleList, tuple):
+            samples_to_check = list(np.asarray([x[0] for x in sampleList]).flatten())
+        else:
+            samples_to_check = sampleList
+
+        filtered_ids = set(np.unique(analyses_df_filtered[ID_col]))
+        for sample in samples_to_check:
+            if sample not in filtered_ids:
+                print('Warning - sample has no data after filtering: ', sample)
+
+                
+    samples_df = samples_df.copy()
+    samples_df.set_index(ID_col,inplace=True,drop=False)
+    df = loadData(samples_df, analyses_df_filtered)
+    return df
+
+
+def lessThan(dataframe, column, number):
+    '''
+    Filters a DataFrame based on a column heading and a value
+    
+    Parameters
+    ----------
+    dataframe : Pandas DataFrame
+    column : Column name that will be filtered
+    number : Less than value
+    
+    Returns
+    -------
+    A filtered Pandas DataFrame
+    '''
+    return dataframe[dataframe[column] < number]
+
+
+def greaterThan(dataframe, column, number):
+    '''
+    Filters a DataFrame based on a column heading and a value
+    
+    Parameters
+    ----------
+    dataframe : Pandas DataFrame
+    column : Column name that will be filtered
+    number : Greater than value
+    
+    Returns
+    -------
+    A filtered Pandas DataFrame
+    '''    
+    return dataframe[dataframe[column] > number]
+
+def calcMDA_2(sampleList, main_byid_df, analyses_df, samples_df, ages, errors, metrics=['YSG','YC1s','YC2s','YSP','YGF'],
+    min_cluster_size='Default',filters=None, csvOutput=False, csvFileName='MDA_calcs',plotOutput=True,
+    orientation='portrait',figsize=(8, 6),plotType='PDP',bw=10,xdif=0.1,padding=0.25,axline=None,
+    ageRange='Default',colorBy=None,vmin_vmax='Default',colormap='seismic',subplotRange='Default',
+    savePlot=False,plotFileName='MDA_plot'):
+
+    """
+    Note: This function is being tested. Use with caution.
+
+    Calculate Maximum Depositional Ages (MDAs) for detrital zircon samples using multiple
+    methods, with optional data filtering, CSV export, and plot generation.
+
+    Parameters
+    ----------
+    sampleList : array of sample IDs
+        Must be in form for individual samples: ['Sample1', 'Sample2', . . . , etc.]
+        Must be in the form for groups of samples: [(['Sample1','Sample2', . . . , etc.], 'Group 1 name'),
+                                                    (['Sample1','Sample2', . . . , etc.], 'Group 2 name')]
+    main_byid_df : DataFrame
+        Pandas DataFrame containing the loaded dataset, output from loadData()
+    analyses_df : DataFrame
+        Pandas DataFrame of the analyses table such as is returned by loadDataExcel()
+    samples_df : DataFrame
+        Pandas DataFrame of the samples table such as is returned by loadDataExcel()
+    ages : list of arrays
+        Array of ages for each sample or sample group. Output from sampleToData()
+    errors : list of arrays
+        Array of 1-sigma errors for each sample or sample group. Output from sampleToData()
+    metrics : list of str, optional
+        MDA methods to calculate. Options: 'YSG', 'YC1s', 'YC2s', 'YSP', 'YGF', 'YDZ',
+        'Y3Za', 'Y3Zo', 'YPP', 'tauMethod'. Default: ['YSG','YC1s','YC2s','YSP','YGF'].
+    min_cluster_size : int or 'Default', optional
+        Minimum number of analyses required to form a cluster for cluster-based MDA methods.
+        If 'Default', each method uses its own internal default.
+    filters : list of tuples or None, optional
+        List of filter conditions as (column, operator, value), e.g.
+        [('U_ppm', 'less than', 2000)]. Supported operators: 'less than', 'greater than'.
+        Default: None (no filtering).
+    csvOutput : bool, optional
+        If True, saves MDA results to CSV in the Output/ directory. Default: False.
+    csvFileName : str, optional
+        Base filename (without extension) for CSV output. Default: 'MDA_calcs'.
+    plotOutput : bool, optional
+        If True, generates a plot for each sample. Default: True.
+    orientation : str, optional
+        Plot layout orientation. Either 'portrait' or 'landscape'. Default: 'portrait'.
+    figsize : tuple, optional
+        Figure size as (width, height) in inches. Default: (8, 6).
+    plotType : str, optional
+        Type of age distribution curve to overlay. Either 'PDP', 'KDE', or None. Default: 'PDP'.
+    bw : float, optional
+        Bandwidth for KDE calculation (used only if plotType='KDE'). Default: 10.
+    xdif : float, optional
+        Age resolution (spacing) for PDP/KDE curves in Ma. Default: 0.1.
+    padding : float, optional
+        Fractional padding added to axis limits beyond the data range. Default: 0.25.
+    axline : float, int, or list, optional
+        Age value(s) at which to draw a dashed reference line. Can be a single value
+        (applied to all samples) or a list (one per sample). Default: None.
+    axeRange : 'Default' or list, optional
+        **Unused parameter** — see note below.
+    colorBy : str or None, optional
+        Column name in analyses_df used to color-code individual analyses. Default: None.
+    vmin_vmax : tuple or 'Default', optional
+        (min, max) values for colormap normalization when colorBy is set. Default: 'Default'.
+    colormap : str, optional
+        Matplotlib colormap name for colorBy coloring. Default: 'seismic'.
+    subplotRange : tuple or 'Default', optional
+        (min, max) axis limits for the colorBy subplot. Default: 'Default'.
+    savePlot : bool, optional
+        If True, saves each sample's figure as a PDF in the Output/ directory. Default: False.
+    plotFileName : str, optional
+        Base filename prefix for saved plot PDFs. Default: 'MDA_plot'.
+
+    Returns
+    -------
+    fig : matplotlib.figure.Figure
+        The last figure generated (one per sample).
+    """
+
+    # Calculate specified MDAs for all data
+    if 'YSG' in metrics:
+        YSG_result = MDA.YSG(ages, errors, sigma=2)
+    if 'YDZ' in metrics:
+        YDZ_result = MDA.YDZ(ages, errors)
+    if 'Y3Za' in metrics:
+        Y3Za_result = MDA.Y3Za(ages, errors)
+    if 'Y3Zo' in metrics:
+        Y3Zo_result = MDA.Y3Zo(ages, errors)
+    if 'YGF' in metrics:
+        # YGF_result = dz_lib.YGF(ages, errors)
+        YGF_result = MDA.YGF(ages, errors)[0]
+    if min_cluster_size != 'Default': # Note that the same min_cluster_size must be used across all metrics
+        if 'YPP' in metrics:
+            YPP_result = MDA.YPP(ages, errors, min_cluster_size=min_cluster_size)
+        if 'YSP' in metrics:
+            YSP_result = MDA.YSP(ages, errors, min_cluster_size=min_cluster_size)
+        if 'YC1s' in metrics:
+            YC1s_result = MDA.YC1s(ages, errors, min_cluster_size=min_cluster_size)
+        if 'YC2s' in metrics:
+            YC2s_result = MDA.YC2s(ages, errors, min_cluster_size=min_cluster_size)    
+        if 'tauMethod' in metrics:
+            tauMethod_result = MDA.tauMethod(ages, errors, min_cluster_size=min_cluster_size)
+    else:
+        if 'YPP' in metrics:
+            YPP_result = MDA.YPP(ages, errors)
+        if 'YSP' in metrics:
+            # Change to MDA. once code is updated        
+            YSP_result = MDA.YSP(ages, errors)
+        if 'YC1s' in metrics:
+            YC1s_result = MDA.YC1s(ages, errors)
+        if 'YC2s' in metrics:
+            YC2s_result = MDA.YC2s(ages, errors)
+        if 'tauMethod' in metrics:
+            tauMethod_result = MDA.tauMethod(ages, errors)
+
+    # Filter main_byid_df
+    if filters is not None:
+        main_byid_df_filtered = filterByAnalyses(analyses_df, samples_df, filters, sampleList)
+        ages_filter, errors_filter, numGrains_filter, labels_filter = sampleToData(sampleList, main_byid_df_filtered, sigma = '1sigma');
+        
+        # Calculate specified MDAs for filtered data
+        if 'YSG' in metrics:
+            YSG_result_filter = MDA.YSG(ages_filter, errors_filter, sigma=2)
+        if 'YDZ' in metrics:
+            YDZ_result_filter = MDA.YDZ(ages_filter, errors_filter)
+        if 'Y3Za' in metrics:
+            Y3Za_result_filter = MDA.Y3Za(ages_filter, errors_filter)
+        if 'Y3Zo' in metrics:
+            Y3Zo_result_filter = MDA.Y3Zo(ages_filter, errors_filter)
+        if 'YGF' in metrics:
+            # YGF_result_filter = dz_lib.YGF(ages_filter, errors_filter)
+            YGF_result_filter = MDA.YGF(ages_filter, errors_filter)[0]
+        if min_cluster_size != 'Default': # Note that the same min_cluster_size must be used across all metrics
+            if 'YPP' in metrics:
+                YPP_result_filter = MDA.YPP(ages_filter, errors_filter, min_cluster_size=min_cluster_size)
+            if 'YSP' in metrics:
+                YSP_result_filter = MDA.YSP(ages_filter, errors_filter, min_cluster_size=min_cluster_size)
+            if 'YC1s' in metrics:
+                YC1s_result_filter = MDA.YC1s(ages_filter, errors_filter, min_cluster_size=min_cluster_size)
+            if 'YC2s' in metrics:
+                YC2s_result_filter = MDA.YC2s(ages_filter, errors_filter, min_cluster_size=min_cluster_size)    
+            if 'tauMethod' in metrics:
+                tauMethod_result_filter = MDA.tauMethod(ages_filter, errors_filter, min_cluster_size=min_cluster_size)
+        else:
+            if 'YPP' in metrics:
+                YPP_result_filter = MDA.YPP(ages_filter, errors_filter)
+            if 'YSP' in metrics:
+                # Change to MDA. once code is updated        
+                YSP_result_filter = MDA.YSP(ages_filter, errors_filter)
+            if 'YC1s' in metrics:
+                YC1s_result_filter = MDA.YC1s(ages_filter, errors_filter)
+            if 'YC2s' in metrics:
+                YC2s_result_filter = MDA.YC2s(ages_filter, errors_filter)
+            if 'tauMethod' in metrics:
+                tauMethod_result_filter = MDA.tauMethod(ages_filter, errors_filter)
+                
+    # Assemble results
+    data = {
+        'sample' : [x for x in sampleList],
+        'N' : [len(x) for x in ages]
+    }
+    if 'YSG' in metrics:
+        data.update({
+        'YSG_Ma' : [x[0] for x in YSG_result],
+        'YSG_Ma_err2s' : [x[1] for x in YSG_result]}
+        )
+    if 'YC1s' in metrics:
+        data.update({
+        'YC1s_Ma' : [x[0] for x in YC1s_result],
+        'YC1s_Ma_err2s' : [x[1] for x in YC1s_result],
+        'YC1s_MSWD' : [x[2] for x in YC1s_result],
+        'YC1s_N' : [x[3] for x in YC1s_result]
+        })
+    if 'YC2s' in metrics:
+        data.update({
+        'YC2s_Ma' : [x[0] for x in YC2s_result],
+        'YC2s_Ma_err2s' : [x[1] for x in YC2s_result],
+        'YC2s_MSWD' : [x[2] for x in YC2s_result],
+        'YC2s_N' : [x[3] for x in YC2s_result]
+        })
+    if 'YDZ' in metrics:
+        data.update({
+        'YDZ_Ma_mode' : [x[0] for x in YDZ_result],
+        'YDZ_Ma_err2s+' : [x[1] for x in YDZ_result],
+        'YDZ_Ma_err2s-' : [x[2] for x in YDZ_result]
+        })
+    if 'Y3Za' in metrics:
+        data.update({
+        'Y3Za_Ma' : [x[0] for x in Y3Za_result],
+        'Y3Za_Ma_err2s' : [x[1] for x in Y3Za_result],
+        'Y3Za_MSWD' : [x[2] for x in Y3Za_result]
+        })
+    if 'Y3Zo' in metrics:
+        data.update({
+        'Y3Zo_Ma' : [x[0] for x in Y3Zo_result],
+        'Y3Zo_Ma_err2s' : [x[1] for x in Y3Zo_result],
+        'Y3Zo_MSWD' : [x[2] for x in Y3Zo_result]
+        })
+    if 'YPP' in metrics:
+        data.update({
+        'YPP_Ma' : [x for x in YPP_result]
+        })
+    if 'YSP' in metrics:
+        data.update({
+        'YSP_Ma' : [x[0] for x in YSP_result],
+        'YSP_Ma_err2s' : [x[1] for x in YSP_result],
+        'YSP_MSWD' : [x[2] for x in YSP_result],
+        'YSP_N' : [x[3] for x in YSP_result]
+        })
+    if 'tauMethod' in metrics:
+        data.update({
+        'tauMethod_Ma' : [x[0] for x in tauMethod_result],
+        'tauMethod_Ma_err2s' : [x[1] for x in tauMethod_result],
+        'tauMethod_MSWD' : [x[2] for x in tauMethod_result],
+        'tauMethod_N' : [x[3] for x in tauMethod_result]
+        })
+    if 'YGF' in metrics:
+        data.update({
+        'YGF_Ma' : [x[0] for x in YGF_result],
+        'YGF_Ma_err2s' : [x[1] for x in YGF_result],
+        'YGF_N' : [x[2] for x in YGF_result]
+        })
+    dataTable = pd.DataFrame.from_dict(data)
+    dataTable.set_index('sample',inplace=True)
+
+    # Assemble results for filtered data
+    if filters is not None:
+        data_filter = {
+            'sample' : [x for x in sampleList],
+            'N' : [len(x) for x in ages_filter]
+        }
+        if 'YSG' in metrics:
+            data_filter.update({
+            'YSG_Ma' : [x[0] for x in YSG_result_filter],
+            'YSG_Ma_err2s' : [x[1] for x in YSG_result_filter]}
+            )
+        if 'YC1s' in metrics:
+            data_filter.update({
+            'YC1s_Ma' : [x[0] for x in YC1s_result_filter],
+            'YC1s_Ma_err2s' : [x[1] for x in YC1s_result_filter],
+            'YC1s_MSWD' : [x[2] for x in YC1s_result_filter],
+            'YC1s_N' : [x[3] for x in YC1s_result_filter]
+            })
+        if 'YC2s' in metrics:
+            data_filter.update({
+            'YC2s_Ma' : [x[0] for x in YC2s_result_filter],
+            'YC2s_Ma_err2s' : [x[1] for x in YC2s_result_filter],
+            'YC2s_MSWD' : [x[2] for x in YC2s_result_filter],
+            'YC2s_N' : [x[3] for x in YC2s_result_filter]
+            })
+        if 'YDZ' in metrics:
+            data_filter.update({
+            'YDZ_Ma_mode' : [x[0] for x in YDZ_result_filter],
+            'YDZ_Ma_err2s+' : [x[1] for x in YDZ_result_filter],
+            'YDZ_Ma_err2s-' : [x[2] for x in YDZ_result_filter]
+            })
+        if 'Y3Za' in metrics:
+            data_filter.update({
+            'Y3Za_Ma' : [x[0] for x in Y3Za_result_filter],
+            'Y3Za_Ma_err2s' : [x[1] for x in Y3Za_result_filter],
+            'Y3Za_MSWD' : [x[2] for x in Y3Za_result_filter]
+            })
+        if 'Y3Zo' in metrics:
+            data_filter.update({
+            'Y3Zo_Ma' : [x[0] for x in Y3Zo_result_filter],
+            'Y3Zo_Ma_err2s' : [x[1] for x in Y3Zo_result_filter],
+            'Y3Zo_MSWD' : [x[2] for x in Y3Zo_result_filter]
+            })
+        if 'YPP' in metrics:
+            data_filter.update({
+            'YPP_Ma' : [x for x in YPP_result_filter]
+            })
+        if 'YSP' in metrics:
+            data_filter.update({
+            'YSP_Ma' : [x[0] for x in YSP_result_filter],
+            'YSP_Ma_err2s' : [x[1] for x in YSP_result_filter],
+            'YSP_MSWD' : [x[2] for x in YSP_result_filter],
+            'YSP_N' : [x[3] for x in YSP_result_filter]
+            })
+        if 'tauMethod' in metrics:
+            data_filter.update({
+            'tauMethod_Ma' : [x[0] for x in tauMethod_result_filter],
+            'tauMethod_Ma_err2s' : [x[1] for x in tauMethod_result_filter],
+            'tauMethod_MSWD' : [x[2] for x in tauMethod_result_filter],
+            'tauMethod_N' : [x[3] for x in tauMethod_result_filter]
+            })
+        if 'YGF' in metrics:
+            data_filter.update({
+            'YGF_Ma' : [x[0] for x in YGF_result_filter],
+            'YGF_Ma_err2s' : [x[1] for x in YGF_result_filter],
+            'YGF_N' : [x[2] for x in YGF_result_filter]
+            })
+        dataTable_filter = pd.DataFrame.from_dict(data_filter)
+        dataTable_filter.set_index('sample',inplace=True)
+        
+        
+    # Export CSV
+    if csvOutput:
+        pathlib.Path('Output').mkdir(parents=True, exist_ok=True) # Recursively creates the directory and does not raise an exception if the directory already exists 
+        dataTable.to_csv('Output/'+str(csvFileName)+'.csv')
+        print('A CSV file with unfiltered MDA results has been saved')
+        if filters is not None:
+            dataTable_filter.to_csv('Output/'+str(csvFileName)+'_filtered.csv')
+            print('A CSV file with filtered MDA results has been saved')
+
+    # Plot results
+    if plotOutput:
+        # Create an array of the variable to color data points by
+        if colorBy is not None:
+            variable = sampleToVariable(sampleList, main_byid_df, colorBy)
+            cm = plt.get_cmap(colormap)
+            if vmin_vmax != 'Default':
+                cNorm = matplotlib.colors.Normalize(vmin=vmin_vmax[0], vmax=vmin_vmax[1])
+                scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=cm)
+            else:
+                scalarMap = cmx.ScalarMappable(cmap=cm)
+
+        # Construct age distributions for plotting
+        if plotType == 'PDP':
+            PDP_age, PDP = PDPcalcAges(ages, errors, xdif=xdif)
+        else:
+            if plotType == 'KDE':
+                KDE_age, KDE = KDEcalcAges_2(ages, bw=bw, xdif=xdif)
+            else:
+                if plotType is not None:
+                    print('Warning: plotType should be either "PDP" or "KDE"')
+
+
+        # Begin plotting each sample or sample group
+        for i in range(len(ages)):
+            
+            # Assemble ages and errors (2-sigma) for plotting
+            data_err2s = list(zip(ages[i],errors[i]*2)) # Zip ages and 2-sigma errors
+
+            # Figure out what additional columns, if any, needed to be included in the Pandas DataFrame
+            if colorBy is not None or filters is not None:
+                if colorBy is not None and filters is None:
+                    extra_cols = [colorBy]
+                if colorBy == None and filters is not None:
+                    extra_cols = list(np.unique(*[x[0] for x in filters])[0])
+                if colorBy is not None and filters is not None:
+                    extra_cols = list(np.unique([colorBy,*[x[0] for x in filters]]))
+                for col in extra_cols:
+                    extra_data = list(sampleToVariable(sampleList, main_byid_df, col)[i])
+                    data_err2s_flat = list(zip(*data_err2s))
+                    data_err2s_flat.append(tuple(extra_data))
+                    data_err2s = list(zip(*data_err2s_flat))
+                # Convert to Pandas DataFrame
+                data_err2s = pd.DataFrame(data_err2s)
+                data_err2s.columns = ['BestAge','BestAge_err2s',*extra_cols]
+            else:
+                # Convert to Pandas DataFrame
+                data_err2s = pd.DataFrame(data_err2s)
+                data_err2s.columns = ['BestAge','BestAge_err2s']
+
+            # Sort based on age
+            data_err2s = data_err2s.sort_values('BestAge')
+            
+            # Begin plotting
+            if orientation == 'landscape':
+                if colorBy == None:
+                    # fig, ax = plt.subplots(1,4, figsize=figsize)
+                    # ax[0] = plt.subplot2grid((1,5),(0,0),colspan=3)
+                    # ax[1] = plt.subplot2grid((1,5),(0,3),colspan=1)
+                    fig = plt.figure(figsize=figsize)
+                    gs = fig.add_gridspec(1, 5)
+                    ax0 = fig.add_subplot(gs[0, 0:3])
+                    ax1 = fig.add_subplot(gs[0, 3])
+                    ax = [ax0, ax1]
+                    
+                else:
+                    # fig, ax = plt.subplots(4,4, figsize=figsize)
+                    # ax = ax.flatten()
+                    # ax[0] = plt.subplot2grid((4,4),(0,0),colspan=3,rowspan=3)
+                    # ax[1] = plt.subplot2grid((4,4),(0,3),rowspan=3)
+                    # ax[2] = plt.subplot2grid((4,4),(3,0),colspan=3)
+                    # ax[3] = plt.subplot2grid((4,4),(3,3))
+                    # ax[3].axis('off') # delete axis from empty subplot
+                    
+                    fig = plt.figure(figsize=figsize)
+                    gs = fig.add_gridspec(4, 4)
+                    ax0 = fig.add_subplot(gs[0:3, 0:3])
+                    ax1 = fig.add_subplot(gs[0:3, 3])
+                    ax2 = fig.add_subplot(gs[3, 0:3])
+                    ax3 = fig.add_subplot(gs[3, 3])
+                    ax3.axis('off')
+                    ax = [ax0, ax1, ax2, ax3]
+                ax[1].get_yaxis().set_ticks([])
+            
+                # Plot text
+                ax[1].text(y=1.03, x=1, s='±2σ shown', transform=ax[1].transAxes, horizontalalignment='right', size='x-small')
+                if isinstance(sampleList[0], tuple):
+                    ax[0].text(y=1.025, x=0.025, s=sampleList[i][1], transform=ax[0].transAxes, size='large')
+                else:
+                    ax[0].text(y=1.025, x=0.025, s=sampleList[i], transform=ax[0].transAxes, size='large')
+                    
+                # Plot MDA results
+                x_axis = np.arange(len(metrics))
+                x_axis_dict = dict(list(zip(metrics, x_axis))) # Create a dictionary that gives plotting position
+                # Select appropriate color for the MDA plot
+                # if filters == None:
+                #     color = 'black'
+                # else:
+                #     color = 'gray'
+                if 'YSG' in metrics:
+                    ax[1].errorbar(y=YSG_result[i][0],x=x_axis_dict['YSG'],yerr=YSG_result[i][1], marker='s', color='black')
+                if 'YDZ' in metrics:
+                    ax[1].errorbar(y=YDZ_result[i][0],x=x_axis_dict['YDZ'], yerr=([YDZ_result[i][2]],[YDZ_result[i][1]]), marker='s', color='black') # Wait until YDZ can be replicated
+                if 'Y3Za' in metrics:
+                    ax[1].errorbar(y=Y3Za_result[i][0],x=x_axis_dict['Y3Za'], yerr=Y3Za_result[i][1], marker='s', color='black')
+                if 'YC1s' in metrics:
+                    ax[1].errorbar(y=YC1s_result[i][0],x=x_axis_dict['YC1s'],yerr=YC1s_result[i][1], marker='s', color='black')
+                if 'Y3Zo' in metrics:
+                    ax[1].errorbar(y=Y3Zo_result[i][0],x=x_axis_dict['Y3Zo'], yerr=Y3Zo_result[i][1], marker='s', color='black')
+                if 'YC2s' in metrics:
+                    ax[1].errorbar(y=YC2s_result[i][0],x=x_axis_dict['YC2s'],yerr=YC2s_result[i][1], marker='s', color='black')
+                if 'YPP' in metrics:
+                    ax[1].errorbar(y=YPP_result[i],x=x_axis_dict['YPP'], yerr=0, marker='s', color='black')
+                if 'YSP' in metrics:
+                    ax[1].errorbar(y=YSP_result[i][0], x=x_axis_dict['YSP'], yerr=YSP_result[i][1], marker='s', color='black')
+                if 'tauMethod' in metrics:
+                    ax[1].errorbar(y=tauMethod_result[i][0], x=x_axis_dict['tauMethod'], yerr=tauMethod_result[i][1], marker='s', color='black')
+                if 'YGF' in metrics:
+                    ax[1].errorbar(y=YGF_result[i][0], x=x_axis_dict['YGF'], yerr=YGF_result[i][1], marker='s', color='black')
+                
+                # Plot MDA results from filtered dataset
+                if filters is not None:
+                    if 'YSG' in metrics:
+                        ax[1].errorbar(y=YSG_result_filter[i][0],x=x_axis_dict['YSG'],yerr=YSG_result_filter[i][1], marker='s', color='gray')
+                    if 'YDZ' in metrics:
+                        ax[1].errorbar(y=YDZ_result_filter[i][0],x=x_axis_dict['YDZ'], yerr=([YDZ_result_filter[i][2]],[YDZ_result_filter[i][1]]), marker='s', color='gray') # Wait until YDZ can be replicated
+                    if 'Y3Za' in metrics:
+                        ax[1].errorbar(y=Y3Za_result_filter[i][0],x=x_axis_dict['Y3Za'], yerr=Y3Za_result_filter[i][1], marker='s', color='gray')
+                    if 'YC1s' in metrics:
+                        ax[1].errorbar(y=YC1s_result_filter[i][0],x=x_axis_dict['YC1s'],yerr=YC1s_result_filter[i][1], marker='s', color='gray')
+                    if 'Y3Zo' in metrics:
+                        ax[1].errorbar(y=Y3Zo_result_filter[i][0],x=x_axis_dict['Y3Zo'], yerr=Y3Zo_result_filter[i][1], marker='s', color='gray')
+                    if 'YC2s' in metrics:
+                        ax[1].errorbar(y=YC2s_result_filter[i][0],x=x_axis_dict['YC2s'],yerr=YC2s_result_filter[i][1], marker='s', color='gray')
+                    if 'YPP' in metrics:
+                        ax[1].errorbar(y=YPP_result_filter[i],x=x_axis_dict['YPP'], yerr=0, marker='s', color='gray')
+                    if 'YSP' in metrics:
+                        ax[1].errorbar(y=YSP_result_filter[i][0], x=x_axis_dict['YSP'], yerr=YSP_result_filter[i][1], marker='s', color='gray')
+                    if 'tauMethod' in metrics:
+                        ax[1].errorbar(y=tauMethod_result_filter[i][0], x=x_axis_dict['tauMethod'], yerr=tauMethod_result_filter[i][1], marker='s', color='gray')            
+                    if 'YGF' in metrics:
+                        ax[1].errorbar(y=YGF_result_filter[i][0], x=x_axis_dict['YGF'], yerr=YGF_result_filter[i][1], marker='s', color='gray')
+
+                plt.sca(ax[1]) # Set the current axis to ax[1]
+                plt.xticks(x_axis, metrics, rotation='vertical')
+                ax[1].set_xlabel('MDA method', size='small')
+                    
+                # Figure out y- or x-axis dimensions
+                if ageRange == 'Default':
+                    # Get axis limits for left subplot (ages)
+                    age_min, age_max = ax[1].get_ylim()
+                    # For avoiding a situation where the youngest grain is not plotted
+                    age_min_alt = np.min(data_err2s['BestAge']-data_err2s['BestAge_err2s']) # Minimum bound
+                    if age_min_alt < age_min:
+                        age_min = age_min_alt
+                    yPadding = (age_max-age_min)*padding
+                    ax[1].set_ylim(age_min-yPadding, age_max+yPadding)
+                    ax[0].set_ylim(age_min-yPadding, age_max+yPadding)                
+                else:
+                    age_min, age_max = ageRange[0], ageRange[1]
+                    ax[0].set_ylim(age_min,age_max)
+                    ax[1].set_ylim(age_min,age_max)
+                    yPadding = 0
+                    
+                # Select which analyses to include on the plot
+                data_err2s_filtered = data_err2s[data_err2s['BestAge'] - data_err2s['BestAge_err2s']<age_max+yPadding] # Age minus 2-sigma uncertanity is less than the upper limit of the plot
+                    
+            if orientation == 'portrait':
+                if colorBy is None:
+                    # fig, ax = plt.subplots(4,1, figsize=figsize)
+                    # ax[0] = plt.subplot2grid((5,1),(0,0),rowspan=3)
+                    # ax[1] = plt.subplot2grid((5,1),(3,0),rowspan=1)
+                    
+                    fig = plt.figure(figsize=figsize)
+                    gs = fig.add_gridspec(5, 1)
+                    ax0 = fig.add_subplot(gs[0:3, 0])
+                    ax1 = fig.add_subplot(gs[3, 0])
+                    ax = [ax0, ax1]
+                else:
+                    # fig, ax = plt.subplots(4,4, figsize=figsize)
+                    # ax = ax.flatten()
+                    # ax[0] = plt.subplot2grid((4,4),(0,0),rowspan=3,colspan=3)
+                    # ax[1] = plt.subplot2grid((4,4),(3,0),colspan=3)
+                    # ax[2] = plt.subplot2grid((4,4),(0,3),rowspan=3)
+                    # ax[3] = plt.subplot2grid((4,4),(3,3))
+                    # ax[3].axis('off') # delete axis from empty subplot
+                    
+                    fig = plt.figure(figsize=figsize)
+                    gs = fig.add_gridspec(4, 4)
+                    ax0 = fig.add_subplot(gs[0:3, 0:3])
+                    ax1 = fig.add_subplot(gs[3, 0:3])
+                    ax2 = fig.add_subplot(gs[0:3, 3])
+                    ax3 = fig.add_subplot(gs[3, 3])
+                    ax3.axis('off')
+                    ax = [ax0, ax1, ax2, ax3]
+                ax[0].get_xaxis().set_ticks([])
+            
+                # Plot text
+                if colorBy is not None:
+                    ax[2].text(y=1.03, x=1, s='±2σ shown', transform=ax[2].transAxes, horizontalalignment='right', size='x-small')
+                else:
+                    ax[0].text(y=1.03, x=1, s='±2σ shown', transform=ax[0].transAxes, horizontalalignment='right', size='x-small')
+                if isinstance(sampleList[0], tuple):
+                    ax[0].text(y=1.025, x=0.025, s=sampleList[i][1], transform=ax[0].transAxes, size='large')
+                else:
+                    ax[0].text(y=1.025, x=0.025, s=sampleList[i], transform=ax[0].transAxes, size='large')
+                    
+                # Plot MDA results
+                y_axis = np.arange(len(metrics))
+                y_axis_dict = dict(list(zip(metrics, y_axis))) # Create a dictionary that gives plotting position
+                # # Select appropriate color for the MDA plot
+                # if filters == None:
+                #     color = 'black'
+                # else:
+                #     color = 'gray'
+                if 'YSG' in metrics:
+                    ax[1].errorbar(x=YSG_result[i][0],y=y_axis_dict['YSG'],xerr=YSG_result[i][1], marker='s', color='black')
+                if 'YDZ' in metrics:
+                    ax[1].errorbar(x=YDZ_result[i][0],y=y_axis_dict['YDZ'], xerr=([YDZ_result[i][2]],[YDZ_result[i][1]]), marker='s', color='black') # Wait until YDZ can be replicated     
+                if 'Y3Za' in metrics:
+                    ax[1].errorbar(x=Y3Za_result[i][0],y=y_axis_dict['Y3Za'], xerr=Y3Za_result[i][1], marker='s', color='black')
+                if 'YC1s' in metrics:
+                    ax[1].errorbar(x=YC1s_result[i][0],y=y_axis_dict['YC1s'],xerr=YC1s_result[i][1], marker='s', color='black')
+                if 'Y3Zo' in metrics:
+                    ax[1].errorbar(x=Y3Zo_result[i][0],y=y_axis_dict['Y3Zo'], xerr=Y3Zo_result[i][1], marker='s', color='black')
+                if 'YC2s' in metrics:
+                    ax[1].errorbar(x=YC2s_result[i][0],y=y_axis_dict['YC2s'],xerr=YC2s_result[i][1], marker='s', color='black')
+                if 'YPP' in metrics:
+                    ax[1].errorbar(x=YPP_result[i],y=y_axis_dict['YPP'], xerr=0, marker='s', color='black')
+                if 'YSP' in metrics:
+                    ax[1].errorbar(x=YSP_result[i][0], y=y_axis_dict['YSP'], xerr=YSP_result[i][1], marker='s', color='black')
+                if 'tauMethod' in metrics:
+                    ax[1].errorbar(x=tauMethod_result[i][0], y=y_axis_dict['tauMethod'], xerr=tauMethod_result[i][1], marker='s', color='black')
+                if 'YGF' in metrics:
+                    ax[1].errorbar(x=YGF_result[i][0], y=y_axis_dict['YGF'], xerr=YGF_result[i][1], marker='s', color='black')
+                
+                # Plot MDA results from filtered dataset
+                if filters is not None:
+                    if 'YSG' in metrics:
+                        ax[1].errorbar(x=YSG_result_filter[i][0],y=y_axis_dict['YSG'],xerr=YSG_result_filter[i][1], marker='s', color='gray')
+                    if 'YDZ' in metrics:
+                        ax[1].errorbar(x=YDZ_result_filter[i][0],y=y_axis_dict['YDZ'], xerr=([YDZ_result_filter[i][2]],[YDZ_result_filter[i][1]]), marker='s', color='gray') # Wait until YDZ can be replicated
+                    if 'Y3Za' in metrics:
+                        ax[1].errorbar(x=Y3Za_result_filter[i][0],y=y_axis_dict['Y3Za'], xerr=Y3Za_result_filter[i][1], marker='s', color='gray')
+                    if 'YC1s' in metrics:
+                        ax[1].errorbar(x=YC1s_result_filter[i][0],y=y_axis_dict['YC1s'],xerr=YC1s_result_filter[i][1], marker='s', color='gray')
+                    if 'Y3Zo' in metrics:
+                        ax[1].errorbar(x=Y3Zo_result_filter[i][0],y=y_axis_dict['Y3Zo'], xerr=Y3Zo_result_filter[i][1], marker='s', color='gray')
+                    if 'YC2s' in metrics:
+                        ax[1].errorbar(x=YC2s_result_filter[i][0],y=y_axis_dict['YC2s'],xerr=YC2s_result_filter[i][1], marker='s', color='gray')
+                    if 'YPP' in metrics:
+                        ax[1].errorbar(x=YPP_result_filter[i],y=y_axis_dict['YPP'], xerr=0, marker='s', color='gray')
+                    if 'YSP' in metrics:
+                        ax[1].errorbar(x=YSP_result_filter[i][0], y=y_axis_dict['YSP'], xerr=YSP_result_filter[i][1], marker='s', color='gray')
+                    if 'tauMethod' in metrics:
+                        ax[1].errorbar(x=tauMethod_result_filter[i][0], y=y_axis_dict['tauMethod'], xerr=tauMethod_result_filter[i][1], marker='s', color='gray')
+                    if 'YGF' in metrics:
+                        ax[1].errorbar(x=YGF_result_filter[i][0], y=y_axis_dict['YGF'], xerr=YGF_result_filter[i][1], marker='s', color='gray')
+
+                plt.sca(ax[1]) # Set the current axis to ax[1]
+                plt.yticks(y_axis, metrics, rotation='horizontal')
+                ax[1].set_ylabel('MDA method', size='small')
+                                
+                # Figure out y- or x-axis dimensions
+                if ageRange == 'Default':
+                    # Get axis limits for left subplot (ages)
+                    age_min, age_max = ax[1].get_xlim()
+                    # For avoiding a situation where the youngest grain is not plotted
+                    age_min_alt = np.min(data_err2s['BestAge']-data_err2s['BestAge_err2s']) # Minimum bound
+                    if age_min_alt < age_min:
+                        age_min = age_min_alt
+                    xPadding = (age_max-age_min)*padding
+                    ax[1].set_xlim(age_min-xPadding, age_max+xPadding)
+                    ax[0].set_xlim(age_min-xPadding, age_max+xPadding)                
+                else:
+                    age_min, age_max = ageRange[0], ageRange[1]
+                    ax[0].set_xlim(age_min,age_max)
+                    ax[1].set_xlim(age_min,age_max)
+                    xPadding = 0
+
+                # Select which analyses to include on the plot
+                data_err2s_filtered = data_err2s[data_err2s['BestAge'] - data_err2s['BestAge_err2s']<age_max+xPadding] # Age minus 2-sigma uncertanity is less than the upper limit of the plot
+
+            # Apply filters, if any
+            if filters is not None:
+                data_err2s_filtered_filter = data_err2s_filtered.copy() # Create a deep copy of the sorted age analyses
+                for item in filters:
+                    if item[1] == 'less than':
+                        data_err2s_filtered_filter = lessThan(data_err2s_filtered_filter,item[0],item[2])
+                    elif item[1] == 'greater than':
+                        data_err2s_filtered_filter = greaterThan(data_err2s_filtered_filter,item[0],item[2])
+                    if data_err2s_filtered_filter.shape[0] == 0: # Check to see if empty
+                        print('Warning: no data returned')
+
+            if orientation == 'landscape':
+                x1, x2 = ax[0].get_xlim()
+                x = np.arange(x1, x2, (x2-x1)/len(data_err2s_filtered))
+            if orientation == 'portrait':
+                y1, y2 = ax[0].get_ylim()
+                y = np.arange(y1, y2, (y2-y1)/len(data_err2s_filtered))            
+
+            # Plot individual analyses          
+            # Gray out filtered analyses
+            if filters is not None:
+                indx_gone = np.setdiff1d(data_err2s_filtered.index,data_err2s_filtered_filter.index) # Find the indexes of analyses that were filtered out (i.e., discarded)
+                indx_keep = np.setdiff1d(data_err2s_filtered.index,indx_gone) # Find the indexes of analyses that were not filtered out (i.e., kept)
+                # Find the positions of the analyses that were filtered out (note: this may be different from the indexes themselves). Need this for x-axis plotting.
+                idx = data_err2s_filtered.index
+                locs_gone = []
+                locs_keep = []
+                for j in range(len(indx_gone)):
+                    locs_gone.append(idx.get_loc(indx_gone[j]))
+                for j in range(len(indx_keep)):
+                    locs_keep.append(idx.get_loc(indx_keep[j]))
+            else:
+                indx_keep = data_err2s_filtered.index
+                locs_keep = np.arange(len(data_err2s_filtered)) # No data is discarded, so locs are incremental integers
+                
+            # Resume plotting
+            if orientation == 'landscape':
+                if colorBy == None:
+                    ax[0].errorbar(x=x[locs_keep], y=data_err2s_filtered.loc[indx_keep]['BestAge'], yerr=data_err2s_filtered.loc[indx_keep]['BestAge_err2s'], linestyle='None', elinewidth=2, color='black')
+                else:
+                    ax[0].errorbar(x=x[locs_keep], y=data_err2s_filtered.loc[indx_keep]['BestAge'], yerr=data_err2s_filtered.loc[indx_keep]['BestAge_err2s'], linestyle='None', elinewidth=2, ecolor=scalarMap.to_rgba(data_err2s_filtered.loc[indx_keep][colorBy]))
+                    # Plot secondary data
+                    for j, indx in enumerate(indx_keep):            
+                        ax[2].plot(x[locs_keep][j], data_err2s_filtered[colorBy][indx],'o',color=scalarMap.to_rgba(data_err2s_filtered[colorBy][indx]))
+                    ax[2].set_xticklabels([]) # Turn off x-axis
+                    ax[2].set_ylabel(colorBy, size='large')
+                    if subplotRange != 'Default':
+                        ax[2].set_ylim(subplotRange[0],subplotRange[1])
+
+                if filters is not None:
+                    # Plot filtered data points
+                    for j in range(len(locs_gone)):
+                        top_of_error = data_err2s_filtered.loc[indx_gone[j]]['BestAge'] + data_err2s_filtered.loc[indx_gone[j]]['BestAge_err2s']
+                        bottom_of_error = data_err2s_filtered.loc[indx_gone[j]]['BestAge'] - data_err2s_filtered.loc[indx_gone[j]]['BestAge_err2s']
+                        ax[0].plot([x[locs_gone][j],x[locs_gone][j]],[top_of_error,bottom_of_error],'--', linewidth=2, color='black')
+                        if colorBy is not None:
+                            ax[2].plot(x[locs_gone][j],data_err2s_filtered.loc[indx_gone[j]][colorBy],marker='x',color='gray')
+                    if plotType == 'PDP': # Construct age distributions for plotting (filtered data)
+                        PDP_age_filter, PDP_filter = PDPcalcAges([list(data_err2s_filtered.loc[indx_keep]['BestAge'])], [list(data_err2s_filtered.loc[indx_keep]['BestAge_err2s']/2.)], xdif=xdif)
+                    if plotType == 'KDE': # Construct age distributions for plotting (filtered data)
+                        KDE_age_filter, KDE_filter = KDEcalcAges_2([list(data_err2s_filtered.loc[indx_keep]['BestAge'])], bw=bw, xdif=xdif)
+                        
+                if plotType == 'PDP':
+                    axPDP = ax[0].twiny()
+                    axPDP.get_xaxis().set_ticks([])
+                    if filters == None:
+                        axPDP.plot(PDP[i], PDP_age, '-', color='black', label='PDP')
+                        axPDP.text(y=0.03, x=0.97, s='Black = PDP', transform=axPDP.transAxes, horizontalalignment='right', size='x-small')
+
+                    else:
+                        axPDP_filter = axPDP.twiny()
+                        axPDP_filter.get_xaxis().set_ticks([])
+                        axPDP_filter.plot(PDP_filter[0], PDP_age_filter, '-', color='grey', label='PDP (filtered)')
+                        axPDP.plot(PDP[i], PDP_age, '-', color='black', label='PDP')
+                        axPDP.text(y=0.03, x=0.97, s='Black = unfiltered PDP; Grey = filtered PDP', transform=axPDP.transAxes, horizontalalignment='right', size='x-small')
+
+                if plotType == 'KDE':
+                    axKDE = ax[0].twiny()
+                    axKDE.get_xaxis().set_ticks([])
+                    if filters == None:
+                        axKDE.plot(KDE[i], KDE_age, '-', color='black', label='KDE')
+                        axKDE.text(y=0.07, x=0.97, s='Black = KDE', transform=axKDE.transAxes, horizontalalignment='right', size='x-small')
+                    else:
+                        axKDE_filter = axKDE.twiny()
+                        axKDE_filter.get_xaxis().set_ticks([])
+                        axKDE_filter.plot(KDE_filter[0], KDE_age_filter, '-', color='grey', label='KDE (filtered)')
+                        axKDE.plot(KDE[i], KDE_age, '-', color='black', label='KDE')
+                        axKDE.text(y=0.07, x=0.97, s='Black = unfiltered KDE; Grey = filtered KDE)', transform=axKDE.transAxes, horizontalalignment='right', size='x-small')
+
+                ax[0].get_xaxis().set_ticks([])
+                ax[0].set_ylabel('Age (Ma)', size='large')
+
+                if axline is not None:
+                    if type(axline) is int or type(axline) is float: # Check whether the input is a number
+                        ax[1].axhline(axline, linestyle='--', color='black')                
+                        ax[0].axhline(axline, linestyle='--', color='black')
+                    else:
+                        ax[1].axhline(axline[i], linestyle='--', color='black')                
+                        ax[0].axhline(axline[i], linestyle='--', color='black')
+     
+            if orientation == 'portrait':            
+                if colorBy == None:
+                    ax[0].errorbar(y=y[locs_keep], x=data_err2s_filtered.loc[indx_keep]['BestAge'], xerr=data_err2s_filtered.loc[indx_keep]['BestAge_err2s'], linestyle='None', elinewidth=2, color='black')
+                else:
+                    ax[0].errorbar(y=y[locs_keep], x=data_err2s_filtered.loc[indx_keep]['BestAge'], xerr=data_err2s_filtered.loc[indx_keep]['BestAge_err2s'], linestyle='None', elinewidth=2, ecolor=scalarMap.to_rgba(data_err2s_filtered.loc[indx_keep][colorBy]))
+                    # Plot secondary data
+                    for j, indx in enumerate(indx_keep):            
+                        ax[2].plot(data_err2s_filtered[colorBy][indx],y[locs_keep][j],'o',color=scalarMap.to_rgba(data_err2s_filtered[colorBy][indx]))
+                    ax[2].set_yticklabels([]) # Turn off x-axis
+                    ax[2].set_xlabel(colorBy, size='large')
+                    if subplotRange != 'Default':
+                        ax[2].set_xlim(subplotRange[1],subplotRange[0])
+
+                if filters is not None:
+                    # Plot filtered data points
+                    for j in range(len(locs_gone)):
+                        top_of_error = data_err2s_filtered.loc[indx_gone[j]]['BestAge'] + data_err2s_filtered.loc[indx_gone[j]]['BestAge_err2s']
+                        bottom_of_error = data_err2s_filtered.loc[indx_gone[j]]['BestAge'] - data_err2s_filtered.loc[indx_gone[j]]['BestAge_err2s']
+                        ax[0].plot([top_of_error,bottom_of_error],[y[locs_gone][j],y[locs_gone][j]],'--', linewidth=2, color='gray')
+                        if colorBy is not None:
+                            ax[2].plot(data_err2s_filtered.loc[indx_gone[j]][colorBy],y[locs_gone][j],marker='x',color='gray')
+                    if plotType == 'PDP': # Construct age distributions for plotting (filtered data)
+                        PDP_age_filter, PDP_filter = PDPcalcAges([list(data_err2s_filtered.loc[indx_keep]['BestAge'])],[list(data_err2s_filtered.loc[indx_keep]['BestAge_err2s']/2.)], xdif=xdif)
+                    if plotType == 'KDE': # Construct age distributions for plotting (filtered data)
+                        KDE_age_filter, KDE_filter = KDEcalcAges_2([list(data_err2s_filtered.loc[indx_keep]['BestAge'])], bw=bw, xdif=xdif)
+                        
+                if plotType == 'PDP':
+                    axPDP = ax[0].twinx()
+                    axPDP.get_yaxis().set_ticks([])
+                    if filters == None:
+                        axPDP.plot(PDP_age, PDP[i], '-', color='black', label='PDP')
+                        axPDP.text(x=0.03, y=0.94, s='Black line = PDP', transform=axPDP.transAxes, horizontalalignment='left', size='x-small')
+                    #axPDP.legend(loc='lower right')
+                    else:
+                        axPDP_filter = axPDP.twinx()
+                        axPDP_filter.get_yaxis().set_ticks([])
+                        axPDP.plot(PDP_age, PDP[i], '-', color='black', label='PDP')
+                        axPDP_filter.plot(PDP_age_filter, PDP_filter[0], '-', color='grey', label='PDP (filtered)')
+                        #axPDP_filter.legend(loc='lower right')
+                        axPDP.text(x=0.03, y=0.94, s='Black = unfiltered PDP; Grey = filtered PDP', transform=axPDP.transAxes, horizontalalignment='left', size='x-small')
+
+                if plotType == 'KDE':
+                    axKDE = ax[0].twinx()
+                    axKDE.get_yaxis().set_ticks([])
+                    if filters == None:
+                        axKDE.plot(KDE_age, KDE[i], '-', color='black', label='KDE')
+                        axKDE.text(x=0.03, y=0.90, s='Black = KDE', transform=axKDE.transAxes, horizontalalignment='left', size='x-small')
+                    else:
+                        axKDE_filter = axKDE.twinx()
+                        axKDE_filter.get_yaxis().set_ticks([])
+                        axKDE.plot(KDE_age, KDE[i], '-', color='black', label='KDE')
+                        axKDE_filter.plot(KDE_age_filter, KDE_filter[0], '-', color='grey', label='KDE (filtered)')
+                        axKDE.text(x=0.03, y=0.90, s='Black = unfiltered KDE; Grey = filtered KDE', transform=axKDE.transAxes, horizontalalignment='left', size='x-small')
+
+                ax[0].get_yaxis().set_ticks([])
+                ax[1].set_xlabel('Age (Ma)', size='large')
+
+                if axline is not None:
+                    if type(axline) is int or type(axline) is float: # Check whether the input is a number
+                        ax[1].axvline(axline, linestyle='--', color='black')                
+                        ax[0].axvline(axline, linestyle='--', color='black')
+                    else:
+                        ax[1].axvline(axline[i], linestyle='--', color='black')                
+                        ax[0].axvline(axline[i], linestyle='--', color='black')
+                        
+            if savePlot:
+                pathlib.Path('Output').mkdir(parents=True, exist_ok=True) # Recursively creates the directory and does not raise an exception if the directory already exists 
+                fig.savefig('Output/'+str(plotFileName)+str(sampleList[i])+'.pdf')
+    return fig
