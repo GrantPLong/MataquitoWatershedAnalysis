@@ -1,15 +1,19 @@
+Run parameters
+    seed=982201487
+    n_bootstrap_iterations=10000
+
 Best-fit results
     Sample: CT-9
     Best-fit r2-kde : 0.933
     Mixing coefficients
-    --- CT-7 : 0.236
-    --- CT-1 : 0.764
+    --- CT-7 : 0.206
+    --- CT-1 : 0.794
 
 Bootstrapped mixing coefficient summary
     CT-9:
-      CT-7: median=0.28, 95% CI [0.00, 0.58], width=0.58
-      CT-1: median=0.72, 95% CI [0.42, 1.00], width=0.58
+      CT-7: median=0.27, 95% CI [0.00, 0.68], width=0.68
+      CT-1: median=0.73, 95% CI [0.32, 1.00], width=0.68
 
 Model fit summary
-    CT-9: best-fit r2-kde=0.933, crit=0.978, worse_than_crit=0.999
+    CT-9: best-fit r2-kde=0.933, crit=0.975, worse_than_crit=1.000
 

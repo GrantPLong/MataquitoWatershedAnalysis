@@ -1,3 +1,7 @@
+Run parameters
+    seed=555276185
+    n_bootstrap_iterations=10000
+
 Best-fit results
     Sample: CT-9
     Best-fit vmax : 0.259
@@ -7,8 +11,8 @@ Best-fit results
 
 Bootstrapped mixing coefficient summary
     CT-9:
-      CT-5: median=0.67, 95% CI [0.12, 0.86], width=0.74
-      CT-6: median=0.33, 95% CI [0.14, 0.88], width=0.74
+      CT-5: median=0.67, 95% CI [0.13, 0.86], width=0.73
+      CT-6: median=0.33, 95% CI [0.14, 0.87], width=0.73
 
 Model fit summary
     CT-9: best-fit vmax=0.259, crit=0.120, worse_than_crit=1.000

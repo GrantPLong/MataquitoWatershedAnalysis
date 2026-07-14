@@ -1,3 +1,7 @@
+Run parameters
+    seed=3281779711
+    n_bootstrap_iterations=10000
+
 Best-fit results
     Sample: CT-2
     Best-fit vmax : 0.164
@@ -11,5 +15,5 @@ Bootstrapped mixing coefficient summary
       CT-3: median=0.18, 95% CI [0.10, 0.25], width=0.15
 
 Model fit summary
-    CT-2: best-fit vmax=0.164, crit=0.124, worse_than_crit=0.998
+    CT-2: best-fit vmax=0.164, crit=0.124, worse_than_crit=0.997
 

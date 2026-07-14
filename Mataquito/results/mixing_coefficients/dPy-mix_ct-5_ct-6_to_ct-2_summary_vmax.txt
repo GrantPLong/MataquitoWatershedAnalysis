@@ -1,3 +1,7 @@
+Run parameters
+    seed=4183467509
+    n_bootstrap_iterations=10000
+
 Best-fit results
     Sample: CT-2
     Best-fit vmax : 0.226

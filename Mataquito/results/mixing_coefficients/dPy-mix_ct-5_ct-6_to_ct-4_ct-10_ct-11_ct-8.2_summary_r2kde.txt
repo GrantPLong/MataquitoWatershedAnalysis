@@ -1,42 +1,46 @@
+Run parameters
+    seed=962330716
+    n_bootstrap_iterations=10000
+
 Best-fit results
     Sample: CT-4
-    Best-fit r2-kde : 0.997
+    Best-fit r2-kde : 0.998
     Mixing coefficients
-    --- CT-5 : 0.288
-    --- CT-6 : 0.712
+    --- CT-5 : 0.262
+    --- CT-6 : 0.738
     Sample: CT-10
-    Best-fit r2-kde : 0.967
+    Best-fit r2-kde : 0.975
     Mixing coefficients
-    --- CT-5 : 0.588
-    --- CT-6 : 0.412
+    --- CT-5 : 0.683
+    --- CT-6 : 0.317
     Sample: CT-11
-    Best-fit r2-kde : 0.966
+    Best-fit r2-kde : 0.976
     Mixing coefficients
-    --- CT-5 : 0.41
-    --- CT-6 : 0.59
+    --- CT-5 : 0.476
+    --- CT-6 : 0.524
     Sample: CT-8.2
-    Best-fit r2-kde : 0.983
+    Best-fit r2-kde : 0.99
     Mixing coefficients
-    --- CT-5 : 0.529
-    --- CT-6 : 0.471
+    --- CT-5 : 0.609
+    --- CT-6 : 0.391
 
 Bootstrapped mixing coefficient summary
     CT-4:
-      CT-5: median=0.29, 95% CI [0.14, 0.44], width=0.30
-      CT-6: median=0.71, 95% CI [0.56, 0.86], width=0.30
+      CT-5: median=0.27, 95% CI [0.08, 0.46], width=0.37
+      CT-6: median=0.73, 95% CI [0.54, 0.92], width=0.37
     CT-10:
-      CT-5: median=0.60, 95% CI [0.41, 0.80], width=0.39
-      CT-6: median=0.40, 95% CI [0.20, 0.59], width=0.39
+      CT-5: median=0.70, 95% CI [0.48, 0.92], width=0.45
+      CT-6: median=0.30, 95% CI [0.08, 0.52], width=0.45
     CT-11:
-      CT-5: median=0.43, 95% CI [0.25, 0.61], width=0.36
-      CT-6: median=0.57, 95% CI [0.39, 0.75], width=0.36
+      CT-5: median=0.51, 95% CI [0.31, 0.73], width=0.42
+      CT-6: median=0.49, 95% CI [0.27, 0.69], width=0.42
     CT-8.2:
-      CT-5: median=0.54, 95% CI [0.36, 0.73], width=0.37
-      CT-6: median=0.46, 95% CI [0.27, 0.64], width=0.37
+      CT-5: median=0.63, 95% CI [0.42, 0.85], width=0.43
+      CT-6: median=0.37, 95% CI [0.15, 0.58], width=0.43
 
 Model fit summary
-    CT-4: best-fit r2-kde=0.997, crit=0.984, worse_than_crit=0.113
-    CT-10: best-fit r2-kde=0.967, crit=0.979, worse_than_crit=0.904
-    CT-11: best-fit r2-kde=0.966, crit=0.983, worse_than_crit=0.991
-    CT-8.2: best-fit r2-kde=0.983, crit=0.981, worse_than_crit=0.711
+    CT-4: best-fit r2-kde=0.998, crit=0.987, worse_than_crit=0.076
+    CT-10: best-fit r2-kde=0.975, crit=0.983, worse_than_crit=0.846
+    CT-11: best-fit r2-kde=0.976, crit=0.987, worse_than_crit=0.977
+    CT-8.2: best-fit r2-kde=0.990, crit=0.985, worse_than_crit=0.487
 

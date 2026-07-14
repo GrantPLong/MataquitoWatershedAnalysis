@@ -1,15 +1,19 @@
+Run parameters
+    seed=3605914049
+    n_bootstrap_iterations=10000
+
 Best-fit results
     Sample: CT-2
-    Best-fit r2-kde : 0.973
+    Best-fit r2-kde : 0.962
     Mixing coefficients
-    --- CT-7 : 0.564
-    --- CT-1 : 0.436
+    --- CT-7 : 0.67
+    --- CT-1 : 0.33
 
 Bootstrapped mixing coefficient summary
     CT-2:
-      CT-7: median=0.59, 95% CI [0.39, 0.77], width=0.38
-      CT-1: median=0.41, 95% CI [0.23, 0.61], width=0.38
+      CT-7: median=0.68, 95% CI [0.45, 0.89], width=0.44
+      CT-1: median=0.32, 95% CI [0.11, 0.55], width=0.44
 
 Model fit summary
-    CT-2: best-fit r2-kde=0.973, crit=0.983, worse_than_crit=0.968
+    CT-2: best-fit r2-kde=0.962, crit=0.977, worse_than_crit=0.922
 
