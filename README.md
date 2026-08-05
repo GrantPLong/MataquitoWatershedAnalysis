@@ -1,6 +1,6 @@
 # Mataquito River Watershed Analysis
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19212420.svg)](https://doi.org/10.5281/zenodo.19212420)
+[[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19212420.svg)](https://doi.org/10.5281/zenodo.19212420)](https://doi.org/10.5281/zenodo.21813189)
 
 Erosion rates, sediment provenance, and mineral fertility in the Mataquito River watershed, central Chile (~35S). Uses cosmogenic 10Be, detrital zircon U-Pb geochronology, quartz/zircon fertility analysis, DEM analysis, downstream confluence mixing, and subwatershed geology.
 
