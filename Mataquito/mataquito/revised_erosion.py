@@ -27,7 +27,10 @@ What changed relative to erosion.py, and why
    physically necessary and is retained as the primary analysis, but the size of
    its effect must be reportable, hence the unordered arrays.
 
-   CT-5 is the ONLY array that moves. CT-6 shifts by <0.1%; CT-8, CT-10 and CT-11
+   CT-5 and CT-7 are the only arrays that move, both under the CT-7 -> CT-5
+   filter: CT-5 shifts up (387 -> 413 m/Myr) and the retained CT-7 draws shift
+   down (median ~532 -> ~477 m/Myr). CT-7 enters no fertility scenario, so only
+   the CT-5 shift propagates. CT-6 shifts by <0.1%; CT-8, CT-10 and CT-11
    are 100% retained and are numerically identical ordered or not; CT-3 and CT-4
    have no upstream constraint at all. The sensitivity therefore only bites the
    four CT-5/CT-6-parent scenarios.

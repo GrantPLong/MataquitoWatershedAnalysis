@@ -17,13 +17,8 @@ What changed relative to fertility.py, and why
    additionally contains, at full precision:
        - sheet '<CHILD>'   : the full bootstrap ensemble (one row per iteration)
        - sheet 'Best-fit'  : the deterministic best-fit mixing coefficients
-       - sheet 'Model_fit' : best-fit objective value, crit, and two fit
-                             diagnostics (see load_mixing_results docstring)
-   Reading it therefore removes BOTH hard-coded blocks that used to live in the
-   notebook (the best-fit lists on the violin plots, and the `fit_results` dict
-   used by the goodness-of-fit gate). Those hard-coded values had already gone
-   stale: the notebook carried vmax crit=0.081 for CT-4 while the current run
-   reports crit=0.110.
+   The best-fit coefficients on the notebook's violin plots are read from it,
+   so nothing is hard-coded. The workbook's 'Model_fit' sheet is not read.
 
 2. NEW: MINERAL FLUX RATIOS, reported separately from FERTILITY RATIOS.
 
@@ -211,7 +206,7 @@ def ct3_star_area(A, parent_a, child):
 def load_mixing_results(xlsx_path, child, threshold=THRESHOLD):
     """Load one child's mixing results from a detritalPy-mix results workbook.
 
-    Reads three sheets from a single `dPy-mix_*_results_{metric}.xlsx`:
+    Reads two sheets from a single `dPy-mix_*_results_{metric}.xlsx`:
 
         '<child>'    -- bootstrap ensemble. Columns are the two parent names
                         followed by the objective metric ('vmax' or 'r2-kde').
@@ -219,25 +214,6 @@ def load_mixing_results(xlsx_path, child, threshold=THRESHOLD):
         'Best-fit'   -- deterministic best-fit mixing coefficients, one row per
                         child. These come from a grid search on the UNPERTURBED
                         data and so are seed-independent.
-        'Model_fit'  -- one row per child, up to four diagnostic columns:
-                          col 1: best-fit objective value
-                          col 2: crit -- 95th percentile of comparisons between
-                                 the child and BOOTSTRAPPED VERSIONS OF ITSELF.
-                                 The noise floor: the best fit should beat it.
-                          col 3: fraction of BOOTSTRAPPED BEST-FIT MIXTURES worse
-                                 than the best-fit value. This is "worse than
-                                 BEST-FIT", NOT "worse than crit" -- the legacy
-                                 notebook mislabelled it.
-                          col 4: fraction of RESAMPLED OBSERVATIONS that yielded a
-                                 better objective value than the mixture model.
-                                 detritalPy-mix's own note: a sample that is
-                                 INDISTINGUISHABLE from the mixture should sit at
-                                 ~0.5. Near 1.0 means almost any resample of the
-                                 child fits it better than the mixture does -- the
-                                 mixture is a poor description. This is the most
-                                 directly interpretable fit diagnostic in the
-                                 workbook, and the legacy notebook ignored it.
-                                 (Some older workbooks omit it; NaN if absent.)
 
     Parameters
     ----------
@@ -257,13 +233,6 @@ def load_mixing_results(xlsx_path, child, threshold=THRESHOLD):
         'n_total'          : bootstrap iterations before filtering
         'n_kept'           : bootstrap iterations after filtering
         'best_a', 'best_b' : deterministic best-fit coefficients (full precision)
-        'best_fit'         : best-fit objective value
-        'crit'             : critical objective value (noise floor)
-        'pct_boot_worse_than_best_fit'      : Model_fit col 3
-        'pct_resampled_better_than_mixture' : Model_fit col 4 (~0.5 = ideal;
-                                              NaN if the workbook omits it)
-        'gof_pass'         : bool. For vmax (lower is better): best_fit < crit.
-                             For r2-kde (higher is better): best_fit > crit.
     """
     # --- bootstrap ensemble -------------------------------------------------
     boot = pd.read_excel(xlsx_path, sheet_name=child)
@@ -285,29 +254,6 @@ def load_mixing_results(xlsx_path, child, threshold=THRESHOLD):
     best_a = float(bf.loc[child, parent_a])
     best_b = float(bf.loc[child, parent_b])
 
-    # --- model fit / goodness of fit ---------------------------------------
-    # Column headers in this sheet embed the metric name and are verbose, so
-    # index positionally:
-    #   [Sample, best-fit, crit, %boot-worse-than-best-fit, %resampled-better]
-    mf = pd.read_excel(xlsx_path, sheet_name='Model_fit')
-    mf = mf[mf.iloc[:, 0] == child]
-    best_fit = float(mf.iloc[0, 1])
-    crit = float(mf.iloc[0, 2])
-    pct_boot_worse = float(mf.iloc[0, 3])
-    # Column 4 is the resampled-observations diagnostic (~0.5 = indistinguishable
-    # from the mixture). Tolerate its absence in older workbooks.
-    if mf.shape[1] > 4:
-        pct_resampled_better = float(mf.iloc[0, 4])
-    else:
-        pct_resampled_better = float('nan')
-
-    # vmax / Kuiper: LOWER is better, so a good fit sits BELOW the noise floor.
-    # r2-kde:        HIGHER is better, so a good fit sits ABOVE the noise floor.
-    if metric.lower().startswith('vmax'):
-        gof_pass = best_fit < crit
-    else:
-        gof_pass = best_fit > crit
-
     return {
         'parents': [parent_a, parent_b],
         'metric': metric,
@@ -317,11 +263,6 @@ def load_mixing_results(xlsx_path, child, threshold=THRESHOLD):
         'n_kept': int(keep.sum()),
         'best_a': best_a,
         'best_b': best_b,
-        'best_fit': best_fit,
-        'crit': crit,
-        'pct_boot_worse_than_best_fit': pct_boot_worse,
-        'pct_resampled_better_than_mixture': pct_resampled_better,
-        'gof_pass': bool(gof_pass),
     }
 
 
