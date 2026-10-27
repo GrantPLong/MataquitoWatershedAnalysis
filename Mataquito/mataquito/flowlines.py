@@ -183,30 +183,17 @@ def calculate_stream_distances_from_confluence(samples_gdf, flowlines_gdf,
         line = sample_flowline.geometry.iloc[0]
         distances[sample_name] = calculate_distance_along_line(line, confluence_point)
 
-    # CT-4 (downstream of confluence along the CT-5 flowline)
-    if "CT-4" in target_samples:
-        ct5_flowline = flowlines_gdf[flowlines_gdf["sample_name"] == "CT-5"]
-        if not ct5_flowline.empty:
-            ct5_line = ct5_flowline.geometry.iloc[0]
-            confluence_distance = ct5_line.project(confluence_point)
-            remaining = substring_line(ct5_line, confluence_distance, ct5_line.length)
-            ct4_sample = samples_gdf[samples_gdf["Name"] == "CT-4"].geometry.iloc[0]
-            distances["CT-4"] = remaining.project(ct4_sample) / 1000
-
-    # Other downstream samples
-    other_samples = [s for s in target_samples if s != "CT-4"]
-    for sample_name in other_samples:
-        sample_flowline = flowlines_gdf[flowlines_gdf["sample_name"] == sample_name]
-        if sample_flowline.empty:
-            continue
-        line = sample_flowline.geometry.iloc[0]
-        projected_distance = line.project(confluence_point)
-        point_on_line = line.interpolate(projected_distance)
-        if confluence_point.distance(point_on_line) < 100:
-            distances[sample_name] = projected_distance / 1000
-        else:
+    # Downstream samples: along-channel distance below the confluence, measured on the
+    # CT-5 flowline (it runs through the confluence and on past every downstream sample).
+    # A sample's own flowline starts at the sample, below the confluence, so it cannot be used.
+    ct5_flowline = flowlines_gdf[flowlines_gdf["sample_name"] == "CT-5"]
+    if not ct5_flowline.empty:
+        ct5_line = ct5_flowline.geometry.iloc[0]
+        confluence_distance = ct5_line.project(confluence_point)
+        remaining = substring_line(ct5_line, confluence_distance, ct5_line.length)
+        for sample_name in target_samples:
             sample_point = samples_gdf[samples_gdf["Name"] == sample_name].geometry.iloc[0]
-            distances[sample_name] = sample_point.distance(confluence_point) / 1000
+            distances[sample_name] = remaining.project(sample_point) / 1000
 
     return distances, confluence_point
 

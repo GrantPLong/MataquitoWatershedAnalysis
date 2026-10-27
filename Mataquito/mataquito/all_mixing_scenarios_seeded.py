@@ -343,7 +343,7 @@ def run_scenario_metric(scenario, objective_metric, main_byid_df, n_bootstrap_it
     for xaxis_1, xaxis_2, range_tag, w1 in AGE_AXIS_RANGES:
         fig1 = dMix.plotMix(
             main_byid_df, parent_list, child_list, plotType='KDE', bw=BW, bw_x=BW_X, x1=X1, x2=X2, xdif=XDIF,
-            fillParent=True, parent_colors='Default', child_colors='Default',
+            fillParent=True, parent_colors=['darkorange', 'steelblue'], child_colors='Default',
             color_by_age=False, agebins=[0, 20, 100, 200], agebinsc=['red', 'orange', 'green'], agebinsc_alpha=0.5,
             xaxis_1=xaxis_1, xaxis_2=xaxis_2, w1=w1, w2=4, c=4, plotPie=True, plotMixResults=True,
             best_plot_type='best-fit', plotResultType='violin', violin_width=0.2, sigma=SIGMA,
