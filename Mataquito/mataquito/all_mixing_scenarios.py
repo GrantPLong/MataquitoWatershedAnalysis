@@ -263,7 +263,7 @@ def run_scenario_metric(scenario, objective_metric, main_byid_df, n_bootstrap_it
         df.to_csv(os.path.join(MIXING_RES_DIR, filename), index=False)
 
     # --- fig: histograms of bootstrapped mixing coefficients ---
-    colors = ['green', 'firebrick']
+    colors = ['darkorange', 'steelblue']
     fig_hist, axs_hist = plt.subplots(len(child_list), 1, figsize=(6, 3 * len(child_list)))
     if len(child_list) == 1:
         axs_hist = [axs_hist]
