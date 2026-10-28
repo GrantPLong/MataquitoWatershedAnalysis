@@ -78,7 +78,7 @@ Shared Python package extracted from the notebooks. Each module can be imported 
 |--------|-------------|---------------|
 | `sample_data` | Load sample metadata from Excel | `load_samples()`, `get_erosion_rates()`, `get_areas()` |
 | `flow_network` | Drainage network topology and mass balance | `all_subwatershed_erosion_rates()`, `subwatershed_area()` |
-| `erosion` | Monte Carlo uncertainty propagation for erosion rates | `generate_mc_samples()`, `flux_order_samples()` |
+| `revised_erosion` | Monte Carlo uncertainty propagation for erosion rates | `generate_mc_samples()`, `flux_order_samples()` |
 | `production_rates` | Stone (2000) latitude/altitude scaling for 10Be | `stone2000_production_rate()`, `elevation_to_pressure()` |
 | `fertility` | Quartz and zircon fertility calculations | `load_wct()`, `quartz_fertility()`, `zircon_fertility()` |
 | `flowlines` | D8 flowline tracing and stream distance calculations | `create_flowlines_from_raster()`, `calculate_stream_distances_from_confluence()` |
