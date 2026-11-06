@@ -34,16 +34,60 @@ Citation metadata for this code is in [`CITATION.cff`](CITATION.cff). The [Suppl
 
 All analysis code and data live in the [`Mataquito/`](Mataquito/) folder. **Unless stated otherwise, file paths in this README are relative to `Mataquito/`.**
 
+## Directory structure
+
+```
+Mataquito/
+├── README.md
+├── data/
+│   ├── sample_metadata/        MataquitoSampleData.xlsx (canonical ¹⁰Be sample table), Quartz mass fractions.xlsx, mataquito_area_km2.xlsx
+│   ├── dem/                    fd_utm30m, area_utm30m, CT_{1,5,6,7}_mask (committed); dem_utm30m.tif and failure-index GeoTIFFs (external)
+│   ├── geochronology/
+│   │   └── zircon_upb/         Per-sample U-Pb lab data tables + combined CT-1-11_ZrUPb_datasheets.xlsx
+│   ├── geology/                subwatershed_geologic_units_data.xlsx, combined_subwatershed_summary.xlsx,
+│   │   ├── Geologic_Map/       colored geologic-map shapefile and PNG (NB09)
+│   │   └── landslides/         2010 Maule earthquake landslide inventory (reference data)
+│   ├── hydrology/              DGA discharge/precipitation .xls, CHELSA precipitation GeoTIFF (external)
+│   │   └── CAMELS-CL/          camels_cl_<gauge>/ daily discharge and catchment attributes
+│   └── shapefiles/
+│       ├── sample_points/      flow-corrected sample points, subwatersheds30m.shp
+│       ├── flowlines/          corrected_flowlines.shp (NB07)
+│       ├── geology/            1:1,000,000 geologic map shapefiles (units, faults, volcanic centers)
+│       ├── slope/              CT-1 / CT-7 low-slope (<5°, <10°) rasters and polygons
+│       └── *.shp, *_Slope.tif  Central Depression polygon, adjusted CT-5/CT-6 areas, thrusts, slope rasters (external)
+├── notebooks/                  01–10 analysis notebooks (+ LaTeX tables written by NB09)
+├── mataquito/                  Shared Python package and batch mixing scripts
+├── tests/                      pytest unit tests for the package
+├── figures/
+│   ├── manuscript/             Manuscript figures
+│   ├── zircon/                 DZ age distributions (NB04)
+│   │   └── mixing/             detritalPy-mix figures (NB05 / batch script)
+│   ├── fertility/              Fertility/flux violin and distribution plots (NB06)
+│   ├── mixing/                 Downstream confluence mixing plots (NB07)
+│   └── mass_balance/           Mass-balance figures (NB10, optional)
+├── results/
+│   ├── detritalpy_output/      detritalPy CSV/KML exports (NB04)
+│   ├── mixing_coefficients/    detritalPy-mix workbooks, summaries and bootstrap CSVs (NB05 / batch script)
+│   ├── fertility/              Fertility and flux tables (NB06)
+│   ├── mass_balance/           Area accounting and budget summary (NB10)
+│   └── geology_tables/         Geologic summary tables (NB09)
+└── supplemental/               Manuscript supplemental figures S1–S4 and tables S1–S9
+```
+
+Some folders are created only when the corresponding save lines are enabled: `figures/river_profiles/` and `results/river_profiles/` (NB08), and `figures/geology/` (NB09).
+
+---
+
 ## Contents
 
-1. [Supplemental material](#supplemental-material)
-2. [Study area and drainage network](#study-area-and-drainage-network)
-3. [Setup](#setup)
-4. [Workflow and run order](#workflow-and-run-order)
-5. [Notebook reference](#notebook-reference)
-6. [Batch mixing scripts](#batch-mixing-scripts)
-7. [The `mataquito` package](#the-mataquito-package)
-8. [Directory structure](#directory-structure)
+1. [Directory structure](#directory-structure)
+2. [Supplemental material](#supplemental-material)
+3. [Study area and drainage network](#study-area-and-drainage-network)
+4. [Setup](#setup)
+5. [Workflow and run order](#workflow-and-run-order)
+6. [Notebook reference](#notebook-reference)
+7. [Batch mixing scripts](#batch-mixing-scripts)
+8. [The `mataquito` package](#the-mataquito-package)
 9. [Data](#data)
 10. [Tests](#tests)
 11. [License](#license)
@@ -122,10 +166,10 @@ pip install detritalpy
 | **TopoAnalysis** (not on PyPI) | NB01, NB08, `mataquito.river_profiles` |
 | pytest | `tests/` |
 
-**TopoAnalysis** is the Stanford geomorphology group's DEM toolkit: <https://github.com/stanford-geomorph/TopoAnalysis>. Clone it and install it into the same environment:
+**TopoAnalysis** is the Stanford Tectonic Geomorphology Lab DEM toolkit: <https://github.com/STGL/TopoAnalysis>. Clone it and install it into the same environment:
 
 ```bash
-git clone https://github.com/stanford-geomorph/TopoAnalysis.git
+git clone https://github.com/STGL/TopoAnalysis.git
 ```
 
 ```bash
@@ -464,50 +508,6 @@ The modules in `tests/` also serve as usage examples.
 
 ---
 
-## Directory structure
-
-```
-Mataquito/
-├── README.md
-├── data/
-│   ├── sample_metadata/        MataquitoSampleData.xlsx (canonical ¹⁰Be sample table), Quartz mass fractions.xlsx, mataquito_area_km2.xlsx
-│   ├── dem/                    fd_utm30m, area_utm30m, CT_{1,5,6,7}_mask (committed); dem_utm30m.tif and failure-index GeoTIFFs (external)
-│   ├── geochronology/
-│   │   └── zircon_upb/         Per-sample U-Pb lab data tables + combined CT-1-11_ZrUPb_datasheets.xlsx
-│   ├── geology/                subwatershed_geologic_units_data.xlsx, combined_subwatershed_summary.xlsx,
-│   │   ├── Geologic_Map/       colored geologic-map shapefile and PNG (NB09)
-│   │   └── landslides/         2010 Maule earthquake landslide inventory (reference data)
-│   ├── hydrology/              DGA discharge/precipitation .xls, CHELSA precipitation GeoTIFF (external)
-│   │   └── CAMELS-CL/          camels_cl_<gauge>/ daily discharge and catchment attributes
-│   └── shapefiles/
-│       ├── sample_points/      flow-corrected sample points, subwatersheds30m.shp
-│       ├── flowlines/          corrected_flowlines.shp (NB07)
-│       ├── geology/            1:1,000,000 geologic map shapefiles (units, faults, volcanic centers)
-│       ├── slope/              CT-1 / CT-7 low-slope (<5°, <10°) rasters and polygons
-│       └── *.shp, *_Slope.tif  Central Depression polygon, adjusted CT-5/CT-6 areas, thrusts, slope rasters (external)
-├── notebooks/                  01–10 analysis notebooks (+ LaTeX tables written by NB09)
-├── mataquito/                  Shared Python package and batch mixing scripts
-├── tests/                      pytest unit tests for the package
-├── figures/
-│   ├── manuscript/             Manuscript figures
-│   ├── zircon/                 DZ age distributions (NB04)
-│   │   └── mixing/             detritalPy-mix figures (NB05 / batch script)
-│   ├── fertility/              Fertility/flux violin and distribution plots (NB06)
-│   ├── mixing/                 Downstream confluence mixing plots (NB07)
-│   └── mass_balance/           Mass-balance figures (NB10, optional)
-├── results/
-│   ├── detritalpy_output/      detritalPy CSV/KML exports (NB04)
-│   ├── mixing_coefficients/    detritalPy-mix workbooks, summaries and bootstrap CSVs (NB05 / batch script)
-│   ├── fertility/              Fertility and flux tables (NB06)
-│   ├── mass_balance/           Area accounting and budget summary (NB10)
-│   └── geology_tables/         Geologic summary tables (NB09)
-└── supplemental/               Manuscript supplemental figures S1–S4 and tables S1–S9
-```
-
-Some folders are created only when the corresponding save lines are enabled: `figures/river_profiles/` and `results/river_profiles/` (NB08), and `figures/geology/` (NB09).
-
----
-
 ## Data
 
 ### Sample metadata
@@ -546,13 +546,15 @@ The repository includes:
 
 | File | Path | Source | Needed by |
 |------|------|--------|-----------|
-| 30 m DEM, UTM 19S | `data/dem/dem_utm30m.tif` (and the `DEM_DATA_DIR` set in NB01) | 30 m DEM of the Maule region, projected to UTM zone 19S | NB01, NB08 |
-| Slope rasters (degrees) | `data/shapefiles/CT_7_Slope.tif`, `data/shapefiles/CT_1_Slope.tif` | Derived from the DEM and clipped to the CT-7 and CT-1 masks | NB08 §6 |
+| 30 m DEM, UTM 19S | `data/dem/dem_utm30m.tif` (and the `DEM_DATA_DIR` set in NB01) | Copernicus WorldDEM-30 (see attribution below), projected to WGS 84 / UTM zone 19S (EPSG:32719) | NB01, NB08 |
+| Slope rasters (degrees) | `data/shapefiles/CT_7_Slope.tif`, `data/shapefiles/CT_1_Slope.tif` | Derived from the DEM (in part with TopoAnalysis) and clipped to the CT-7 and CT-1 masks | NB08 §6 |
 | Mean annual precipitation 1981–2010 | `data/hydrology/CHELSA_pr_annual_mm_1981-2010_Mataquito_utm19s.tif` | CHELSA climatology, regridded to the DEM grid | NB08 §6.8 |
 | Hillshade | `data/shapefiles/hillshademauleregion.tif` | Derived from the DEM | NB09 map |
 | Low-slope rasters | `data/shapefiles/slope/CT_{1,7}_slope<{5,10}.tif` | Derived from the slope rasters (the `.gpkg` polygons are committed) | Map figures |
 
-Discharge is from CAMELS-CL (Alvarez-Garreton et al., 2018, <https://camels.cr2.cl>) and the Dirección General de Aguas (DGA) online records. The geologic map shapefiles are the 1:1,000,000 geologic map of Chile, central-zone sheets (`*_centro_u19`). `data/geology/landslides/` holds the comprehensive earthquake-induced landslide inventory for the 2010 Chile (Maule) megathrust earthquake, used as reference data.
+**DEM attribution:** This map was produced using Copernicus WorldDEM-30 © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved. Plotted in coordinate reference system EPSG:32719 - WGS 84 / UTM zone 19S. The hillshade, slope rasters and all other topographic derivatives in this repository were produced from this DEM.
+
+Discharge is from CAMELS-CL (Alvarez-Garreton et al., 2018, <https://camels.cr2.cl>) and the Dirección General de Aguas (DGA) online records. The geologic map shapefiles (central-zone sheets, `*_centro_u19`) are modified from Servicio Nacional de Geología y Minería (2004), 1:1,000,000 map of Chile: Servicio Nacional de Geología y Minería, 2004, Mapa Geológico de Chile: Versión digital: SERNAGEOMIN Publicación Geológica Digital, No. 7 CD-ROM, <https://tiendadigital.sernageomin.cl/es/geologia-basica/3273-mapa-geologico-de-chile-version-digital.html>. `data/geology/landslides/` holds the comprehensive earthquake-induced landslide inventory for the 2010 Chile (Maule) megathrust earthquake, used as reference data.
 
 ---
 
