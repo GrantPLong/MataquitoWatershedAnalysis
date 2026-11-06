@@ -1,15 +1,16 @@
 """Monte Carlo erosion rate sampling and mass-balance (flux) ordering.
 
-REVISED VERSION -- replaces erosion.py.
+Provides the Monte Carlo erosion-rate draws and the downstream-increasing-flux
+(flux-ordering) constraint used by notebooks 06 and 10.
 
-What changed relative to erosion.py, and why
---------------------------------------------
-1. RETURNS BOTH THE ORDERED AND THE UNORDERED ARRAYS, so the notebook can run
-   the whole fertility analysis twice and report the sensitivity of every result
-   to the mass-balance constraint.
+Design notes
+------------
+1. ORDERED AND UNORDERED ARRAYS. `flux_order_samples()` returns the
+   flux-ordered draws used for the primary analysis, and `raw_triples()` returns
+   the unfiltered draws with the same structure, so every fertility and flux
+   result can also be reported without the mass-balance constraint.
 
-   Why this matters. Of the five flux-ordering constraints, only ONE actually
-   binds on the measured data:
+   Of the five flux-ordering constraints, only ONE binds on the measured data:
 
        constraint            upstream flux   downstream flux   retained
        -------------------   -------------   ---------------   --------
@@ -24,29 +25,28 @@ What changed relative to erosion.py, and why
    shifts CT-5's median from 387 to 413 m/Myr, a +6.8% change. Because CT-5 is
    the fast-eroding parent in every upstream scenario, that 6.8% propagates into
    a ~40-50% change in the quartz fertility and flux ratios. The constraint is
-   physically necessary and is retained as the primary analysis, but the size of
-   its effect must be reportable, hence the unordered arrays.
+   physically necessary and is retained as the primary analysis; the unordered
+   arrays quantify its effect.
 
    CT-5 and CT-7 are the only arrays that move, both under the CT-7 -> CT-5
    filter: CT-5 shifts up (387 -> 413 m/Myr) and the retained CT-7 draws shift
    down (median ~532 -> ~477 m/Myr). CT-7 enters no fertility scenario, so only
    the CT-5 shift propagates. CT-6 shifts by <0.1%; CT-8, CT-10 and CT-11
    are 100% retained and are numerically identical ordered or not; CT-3 and CT-4
-   have no upstream constraint at all. The sensitivity therefore only bites the
-   four CT-5/CT-6-parent scenarios.
+   have no upstream constraint at all. The sensitivity therefore only affects
+   the four CT-5/CT-6-parent scenarios.
 
 2. PAIRED TRIPLES. Downstream code needs (E_parent_a, E_parent_b, E_child) as
    arrays of equal length whose index i is the SAME Monte Carlo iteration. The
    joint CT-5+CT-6 -> child filter selects a common index set, so the surviving
-   CT-5, CT-6 and child draws stay index-aligned. This module therefore returns
-   the aligned triples directly rather than leaving the notebook to slice them.
+   CT-5, CT-6 and child draws stay index-aligned. This module returns the
+   aligned triples directly.
 
-3. Local `np.random.default_rng(seed)` instead of the global `np.random.seed`.
-   Deterministic as before, but no longer mutates global random state. Numbers
-   will differ from the legacy implementation (PCG64 vs MT19937 stream).
+3. RANDOM STATE. All draws use a local `np.random.default_rng(seed)`, so
+   results are deterministic for a given seed and the global numpy random state
+   is never modified.
 
-4. The unused CT-4 -> CT-8 ordering block was removed. Nothing consumed it, and
-   it encoded a topology that contradicts the manuscript's stated constraint set.
+4. CT-4 has no ordering constraint of its own (see `flux_order_samples`).
 
 
 What "flux" means here -- read this before citing E*A as a mass flux
@@ -185,10 +185,9 @@ def flux_order_samples(ER, A, N=100_000, seed=17):
         out[key] = rng.choice(ER[child][m], size=N, replace=True)
 
     # CT-4 has no upstream constraint (excluded as poorly mixed), so its "ordered"
-    # triple simply pairs the ordered parents against the raw CT-4 draws. This is
-    # a change from the legacy notebook, which used UNORDERED CT-5 and CT-6 for
-    # CT-4 while every other scenario used ordered ones -- an inconsistency that
-    # made CT-4's numbers non-comparable with the rest of the table.
+    # triple pairs the ordered parents against the raw CT-4 draws, so CT-4 uses
+    # the same ordered CT-5 and CT-6 as every other scenario and its numbers are
+    # comparable with the rest of the table.
     triples['CT-4'] = (CT5_res, CT6_res, ER['CT-4'])
     retained['CT-4 (unconstrained)'] = 1.0
 

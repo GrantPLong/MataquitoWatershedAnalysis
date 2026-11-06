@@ -1,6 +1,6 @@
 """D8 flowline tracing and stream distance calculations.
 
-Extracted from NB07 (downstream confluence mixing).
+Used by notebook 07 (downstream confluence mixing).
 """
 
 import geopandas as gpd

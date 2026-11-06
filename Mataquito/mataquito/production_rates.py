@@ -1,6 +1,6 @@
 """Stone (2000) cosmogenic nuclide production rate scaling.
 
-Extracted from NB02 (production_rates) cell 3.
+Used by notebook 02 (production rates).
 """
 
 import numpy as np

@@ -1,15 +1,20 @@
 """
-run_mixing_scenarios.py
+all_mixing_scenarios_seeded.py
 
 Batch runner for detritalPy-mix top-down mixture modeling of detrital zircon
 U-Pb ages, across every parent/child scenario for the Mataquito dataset.
 
-This replaces manually editing parent_list / child_list in the notebook and
-re-running cell-by-cell. Each scenario is run once with objective_metric='vmax'
-and once with 'r2-kde', producing the same figures/CSV/xlsx outputs the
-notebook produced, saved to MIXING_FIG_DIR / MIXING_RES_DIR.
+Each scenario in SCENARIOS is run once with objective_metric='vmax' and once
+with 'r2-kde' (10,000 bootstrap iterations by default). Every (scenario, metric)
+run gets its own deterministic seed derived from the scenario name, the metric
+and --seed, so results are reproducible and independent of run order. Outputs
+are the same figures/CSV/xlsx/summary files that notebook 05 writes, saved to
+figures/zircon/mixing/ and results/mixing_coefficients/. This script produced
+the mixing results used by notebooks 06 and 10 and Table S6.
 
-Expected location: MataquitoWatershedAnalysis/Mataquito/mataquito/run_mixing_scenarios.py
+Run from the Mataquito/ directory:
+    python mataquito/all_mixing_scenarios_seeded.py            # every scenario, both metrics
+    python mataquito/all_mixing_scenarios_seeded.py ct5ct6_to_CT10 --metric vmax -n 100
 """
 
 import os
@@ -90,9 +95,7 @@ LOG_PATH = os.path.join(MIXING_RES_DIR, 'run_log.txt')
 # ─────────────────────────────────────────────────────────────────────────────
 # Scenario definitions
 # Each entry: name (used for filenames/log tags), parent_list, child_list.
-# This is the full set of parent/child combinations from the notebook's
-# commented-out options, excluding the three-parent mixtures (those were
-# tests, not part of the real sweep).
+# This is the full set of two-parent combinations offered in notebook 05.
 # ─────────────────────────────────────────────────────────────────────────────
 SCENARIOS = [
     # --- Parents CT-7, CT-1: each child run individually ---
@@ -148,11 +151,10 @@ N_BOOTSTRAP_ITERATIONS_DEFAULT = 10000  # overridable with --iterations
 DO_PERTURB_RESAMPLED_AGES = True
 N_GRAINS_TO_RESAMPLE = None
 
-MAKE_HISTOGRAM_FIG = False  # coefficient_histograms figure -- set True to turn back on
+MAKE_HISTOGRAM_FIG = False  # set True to also write the coefficient_histograms figure
 
-# Every scenario now gets BOTH a zoomed (0-25 Ma) and full-range (0-400 Ma)
-# version of any figure with age on the x-axis (fig1, fig3), rather than
-# picking one range based on sample identity.
+# Every scenario gets BOTH a zoomed (0-25 Ma) and full-range (0-400 Ma)
+# version of any figure with age on the x-axis (fig1, fig3).
 AGE_AXIS_RANGES = [(0, 25, '0-25Ma', 5), (0, 400, '0-400Ma', 8)]  # (xaxis_1, xaxis_2, tag, w1 for fig1)
 
 

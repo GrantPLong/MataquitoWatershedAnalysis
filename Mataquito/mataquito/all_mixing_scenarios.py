@@ -1,15 +1,14 @@
 """
-run_mixing_scenarios.py
+all_mixing_scenarios.py
 
-Batch runner for detritalPy-mix top-down mixture modeling of detrital zircon
-U-Pb ages, across every parent/child scenario for the Mataquito dataset.
+Unseeded batch runner for detritalPy-mix top-down mixture modeling of detrital
+zircon U-Pb ages, across every parent/child scenario for the Mataquito dataset.
+Uses the installed detritalPy mixer and a [1.5, 5] Myr KDE bandwidth split at
+25 Ma. The results used in the manuscript come from
+all_mixing_scenarios_seeded.py.
 
-This replaces manually editing parent_list / child_list in the notebook and
-re-running cell-by-cell. Each scenario is run once with objective_metric='vmax'
-and once with 'r2-kde', producing the same figures/CSV/xlsx outputs the
-notebook produced, saved to MIXING_FIG_DIR / MIXING_RES_DIR.
-
-Expected location: MataquitoWatershedAnalysis/Mataquito/mataquito/run_mixing_scenarios.py
+Each scenario is run once with objective_metric='vmax' and once with 'r2-kde',
+saving figures/CSV/xlsx outputs to MIXING_FIG_DIR / MIXING_RES_DIR.
 """
 
 import os
@@ -56,9 +55,7 @@ LOG_PATH = os.path.join(MIXING_RES_DIR, 'run_log.txt')
 # ─────────────────────────────────────────────────────────────────────────────
 # Scenario definitions
 # Each entry: name (used for filenames/log tags), parent_list, child_list.
-# This is the full set of parent/child combinations from the notebook's
-# commented-out options, excluding the three-parent mixtures (those were
-# tests, not part of the real sweep).
+# This is the full set of two-parent combinations offered in notebook 05.
 # ─────────────────────────────────────────────────────────────────────────────
 SCENARIOS = [
     # --- Parents CT-7, CT-1: each child run individually ---
