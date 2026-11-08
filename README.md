@@ -1,6 +1,8 @@
 # Mataquito River Watershed Analysis
 
-Code, data and outputs for a study of erosion rates and sediment sources in the Mataquito River watershed, central Chile (~35°S). The study combines basin-averaged in situ cosmogenic ¹⁰Be erosion rates with detrital zircon U-Pb geochronology from 11 nested river-sand samples (CT-1 through CT-11). The samples run along an Andes-to-coast transect from the Principal Cordillera, through the Central Depression, to the Coastal Cordillera and the Pacific outlet.
+Code, data and outputs for a study of erosion rates and sediment sources in the Mataquito River watershed, central Chile (~35°S). The study combines basin-averaged in situ cosmogenic ¹⁰Be erosion rates with detrital zircon U-Pb geochronology from 11 nested river-sand samples (CT-1 through CT-11). The samples run along an Andes-to-coast transect from the Principal Cordillera, through the Central Depression, to the Coastal Cordillera and the Pacific outlet. 
+
+For questions about the code or data, contact Grant P. Long (glong1@stanford.edu).
 
 The analyses cover:
 
