@@ -375,7 +375,7 @@ All paths below are relative to `Mataquito/`.
      - 4.3 θ = 0.35–0.50
      - 4.4 cells above 500 m only
      - 4.5 block bootstrap of k_sn into K
-     - 4.6 K for n = 1 and 2
+     - 4.6 K for n = 1
      - 4.7 Teno/Lontué ratios
      - 4.8 reproducibility check
      - 4.9 **writes `supplemental/Table_S8.xlsx`**
