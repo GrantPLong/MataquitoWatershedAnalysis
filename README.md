@@ -1,6 +1,6 @@
 # Mataquito River Watershed Analysis
 
-Code, data and outputs for a study of erosion rates and sediment sources in the Mataquito River watershed, central Chile (~35°S). The study combines basin-averaged in situ cosmogenic ¹⁰Be erosion rates with detrital zircon U-Pb geochronology from 11 nested river-sand samples (CT-1 through CT-11). The samples run along an Andes-to-coast transect from the high Principal Cordillera, through the Central Depression, to the Coastal Cordillera and the Pacific outlet.
+Code, data and outputs for a study of erosion rates and sediment sources in the Mataquito River watershed, central Chile (~35°S). The study combines basin-averaged in situ cosmogenic ¹⁰Be erosion rates with detrital zircon U-Pb geochronology from 11 nested river-sand samples (CT-1 through CT-11). The samples run along an Andes-to-coast transect from the Principal Cordillera, through the Central Depression, to the Coastal Cordillera and the Pacific outlet.
 
 The analyses cover:
 
@@ -28,7 +28,7 @@ This repository accompanies the submitted manuscript:
 >
 > \* Corresponding author: glong1@stanford.edu · ORCID [0009-0008-8330-9316](https://orcid.org/0009-0008-8330-9316)
 
-Citation metadata for this code is in [`CITATION.cff`](CITATION.cff). The [Supplemental material](#supplemental-material) section lists the manuscript's supplemental figures and tables.
+Citation metadata for this repository is in [`CITATION.cff`](CITATION.cff). The [Supplemental material](#supplemental-material) section lists the manuscript's supplemental figures and tables.
 
 ---
 
@@ -100,7 +100,7 @@ The supplemental figures and tables for the manuscript are in [`Mataquito/supple
 
 | Item | Contents | Produced by / source |
 |------|----------|----------------------|
-| `Figure_S1.pdf` | Geologic map of the Mataquito watershed with the unit legend | NB09, geologic-map section (1:1,000,000 geology) |
+| `Figure_S1.pdf` | Geologic map legend of the Mataquito watershed area | NB09, geologic-map section (1:1,000,000 geology) |
 | `Figure_S2.pdf` | Quartz and zircon fertility distributions (log₁₀) for the CT-8.2 & CT-3\* → CT-2 and CT-8.2 & CT-3\* → CT-9 scenarios | NB06, Section 13 (`dist_*` plots) |
 | `Figure_S3.pdf` | Quartz and zircon fertility distributions (log₁₀) for the CT-5 & CT-6 → CT-10 / CT-11 / CT-8.2 scenarios | NB06, Section 13 (`dist_*` plots) |
 | `Figure_S4.pdf` | detritalPy-mix results for CT-8.2 & CT-3 → CT-2: parent and child age distributions and mixing-proportion violin plot | NB05 / batch mixing script (`figures/zircon/mixing/`) |
@@ -111,8 +111,8 @@ The supplemental figures and tables for the manuscript are in [`Mataquito/supple
 | `Table_S5.xlsx` | Age-group definitions (min/max age and geologic justification) used to bin zircon ages | Compiled for the manuscript; used for the NB04 age-proportion bins |
 | `Table_S6.xlsx` | Best-fit mixing coefficients (V_max and r²-KDE) for each parent pair and child | **Written by NB05**, last section |
 | `Table_S7.xlsx` | Part A: sediment budget at CT-9 (PC = CT-8.2). Part B: quartz and zircon mineral-flux ratios | **Written by NB10**, Section 8 |
-| `Table_S8.xlsx` | k_sn, erosion rate and erodibility K for the Teno/Lontué outlets, with θ, n and lowland sensitivity | **Written by NB08**, Section 4.9 |
-| `Table_S9.xlsx` | Sample locations, dates, drainage areas, grain size, ¹⁰Be concentrations and erosion rates | `data/sample_metadata/MataquitoSampleData.xlsx` |
+| `Table_S8.xlsx` | k_sn, erosion rate and erodibility K for the Teno/Lontué outlets | **Written by NB08**, Section 4.9 |
+| `Table_S9.xlsx` | Comparison erosion rates to Carretier et al. (2013). Sample locations, dates, drainage areas, grain size, ¹⁰Be concentrations and erosion rates | `data/sample_metadata/MataquitoSampleData.xlsx` |
 
 ---
 
@@ -361,7 +361,7 @@ All paths below are relative to `Mataquito/`.
 
 - **Purpose:**
   1. χ–elevation profiles for six Coastal Cordillera esteros near the outlet and for the Teno (CT-7, CT-5) and Lontué (CT-1, CT-6) outlets, giving k_sn and erodibility K from the ¹⁰Be erosion rates.
-  2. Sensitivity of k_sn and K to θ, n, Central Depression lowland cells and a block bootstrap.
+  2. Sensitivity of k_sn and K to θ, Central Depression lowland cells and a block bootstrap.
   3. Teno/Lontué catchment geometry.
   4. Upper-catchment topography of CT-7 versus CT-1.
   5. Teno/Lontué runoff.
